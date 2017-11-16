@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Ивелина Чекаурова](https://up.htmlacademy.ru/javascript/11/user/452149).
-* Наставник: `Неизвестно`.
+* Наставник: [Артем Черкасов](https://up.htmlacademy.ru/javascript/11/user/530727).
 
 ---
 
