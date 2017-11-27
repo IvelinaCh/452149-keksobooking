@@ -11,7 +11,7 @@ var mapPins = document.querySelector('.map__pins');
 
 var getRandom = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
-}
+};
 
 var getRandomFromArray = function (arr) {
   var index = Math.floor(Math.random() * arr.length);
@@ -19,9 +19,11 @@ var getRandomFromArray = function (arr) {
 };
 
 var createHome = function () {
+  var x = getRandom(300, 901);
+  var y = getRandom(100, 501);
   return {
     author: {
-      avatar: '../img/avatars/user0' + getRandomFromArray(avatars) + '.png'
+      avatar: 'img/avatars/user0' + getRandomFromArray(avatars) + '.png'
     },
     offer: {
       title: getRandomFromArray(titles),
@@ -40,8 +42,8 @@ var createHome = function () {
       x: x,
       y: y
     }
-  }
-}
+  };
+};
 
 var createHomes = function (homesCount) {
   var homes = [];
@@ -49,31 +51,32 @@ var createHomes = function (homesCount) {
     homes.push(createHome());
   }
   return homes;
-}
+};
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var x = getRandom(300, 901);
-var y = getRandom(100, 501);
 var homesCount = 8;
 var homes = createHomes(homesCount);
 
-var createPin = function (homesCount) {
+var createPin = function (homes) {
   var pinElement = mapTemplate.cloneNode(true);
   var button = pinElement.querySelector('.map__pin');
   var pin = button.querySelector('img');
+  button.style.left = homes.location.x;
+  button.style.top = homes.location.y;
+  pin = homes.author.avatar;
+  return pinElement;
+};
+
+var createPins = function (homesCount) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < homesCount; i++) {
-    button.style.left = x;
-    button.style.top = y;
-    pin = homes[i].author.avatar;
-
-    fragment.appendChild(button);
+    var pin = createPin(homes[i]);
+    fragment.appendChild(pin); console.log(homes[i].author.avatar);
   }
-
   return fragment;
-}
+};
 
-mapPins.appendChild(createPin(homesCount));
+mapPins.appendChild(createPins(homesCount));
 
