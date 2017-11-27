@@ -64,37 +64,33 @@ var createPin = function (homes) {
   return pinElement
 };
 
-var createPins = function (homesCount) {
-  var homes = createHomes(homesCount);
+var createPins = function (homes) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < homesCount; i++) {
+  for (var i = 0; i < homes.length; i++) {
     var pin = createPin(homes[i]);
     fragment.appendChild(pin);
   }
   return fragment
 };
 
-var createCard = function (homes) {
+var createCard = function (home) {
   var cardElement = mapCard.cloneNode(true);
-  var photo = cardElement.querySelector('.popup__avatar');
-  photo.src = homes.author.avatar;
+  cardElement.querySelector('.popup__avatar').src = home.author.avatar;
+  cardElement.querySelector('h3').textContent = home.offer.title;
+  cardElement.querySelector('small').textContent = home.offer.address;
+  cardElement.querySelector('.popup__price').innerHTML = home.offer.price + '&#x20bd;/ночь';
+  cardElement.querySelector('h4').textContent = home.offer.type; /*Квартира для flat, Бунгало для bungalo, Дом для house*/
+  cardElement.querySelector('h4 + p').textContent = home.offer.rooms + ' для ' + home.offer.guests + 'гостей';
+  cardElement.querySelector('p + p').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
+  /*cardElement.querySelector('.popup__features').appendChild(querySelector('li')).classList.add; = home.offer.features;*/
+  cardElement.querySelector('.popup__features + p').textContent = home.offer.description;
   return cardElement
-};
-
-var renderCard = function (homes) {
-  var fragment = document.createDocumentFragment();
-  var card = createCard(firstCard);
-  fragment.appendChild(card);
-  return fragment
-};
-
-
+};/*повторения*/
 
 var map = document.querySelector('.map');
 var filter = document.querySelector('.map__filters-container');
 map.classList.remove('map--faded');
 var homesCount = 8;
-var firstCard = createHomes(homesCount)[0];
-mapPins.appendChild(createPins(homesCount));
-map.insertBefore(renderCard(), filter);
-
+var homes = createHomes(homesCount);
+mapPins.appendChild(createPins(homes));
+map.insertBefore(createCard(homes[0]), filter);
