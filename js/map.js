@@ -8,6 +8,7 @@ var times = ['12:00', '13:00', '14:00'];
 var mapTemplate = document.querySelector('template').content;
 var mapPins = document.querySelector('.map__pins');
 var mapCard = mapTemplate.querySelector('.map__card');
+var mapPin = mapTemplate.querySelector('.map__pin');
 
 
 var getRandom = function (min, max) {
@@ -54,19 +55,13 @@ var createHomes = function (homesCount) {
   return homes;
 };
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-mapCard.style.visibility = 'hidden';/*
-mapCard[0].style.visibility = 'visible';*/
-
 var createPin = function (homes) {
-  var pinElement = mapTemplate.cloneNode(true);
-  var button = pinElement.querySelector('.map__pin');
-  var pin = button.querySelector('img');
-  button.style.left = homes.location.x - 20 + 'px';
-  button.style.top = homes.location.y + 40 + 'px';
+  var pinElement = mapPin.cloneNode(true);
+  var pin = pinElement.querySelector('img');
+  pinElement.style.left = homes.location.x - 20 + 'px';
+  pinElement.style.top = homes.location.y + 40 + 'px';
   pin.src = homes.author.avatar;
-  return pinElement;
+  return pinElement
 };
 
 var createPins = function (homesCount) {
@@ -76,9 +71,30 @@ var createPins = function (homesCount) {
     var pin = createPin(homes[i]);
     fragment.appendChild(pin);
   }
-  return fragment;
+  return fragment
 };
 
+var createCard = function (homes) {
+  var cardElement = mapCard.cloneNode(true);
+  var photo = cardElement.querySelector('.popup__avatar');
+  photo.src = homes.author.avatar;
+  return cardElement
+};
+
+var renderCard = function (homes) {
+  var fragment = document.createDocumentFragment();
+  var card = createCard(firstCard);
+  fragment.appendChild(card);
+  return fragment
+};
+
+
+
+var map = document.querySelector('.map');
+var filter = document.querySelector('.map__filters-container');
+map.classList.remove('map--faded');
 var homesCount = 8;
+var firstCard = createHomes(homesCount)[0];
 mapPins.appendChild(createPins(homesCount));
+map.insertBefore(renderCard(), filter);
 
