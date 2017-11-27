@@ -7,6 +7,7 @@ var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var times = ['12:00', '13:00', '14:00'];
 var mapTemplate = document.querySelector('template').content;
 var mapPins = document.querySelector('.map__pins');
+var mapCard = mapTemplate.querySelector('.map__card');
 
 
 var getRandom = function (min, max) {
@@ -55,28 +56,29 @@ var createHomes = function (homesCount) {
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
-
-var homesCount = 8;
-var homes = createHomes(homesCount);
+mapCard.style.visibility = 'hidden';/*
+mapCard[0].style.visibility = 'visible';*/
 
 var createPin = function (homes) {
   var pinElement = mapTemplate.cloneNode(true);
   var button = pinElement.querySelector('.map__pin');
   var pin = button.querySelector('img');
-  button.style.left = homes.location.x;
-  button.style.top = homes.location.y;
-  pin = homes.author.avatar;
+  button.style.left = homes.location.x - 20 + 'px';
+  button.style.top = homes.location.y + 40 + 'px';
+  pin.src = homes.author.avatar;
   return pinElement;
 };
 
 var createPins = function (homesCount) {
+  var homes = createHomes(homesCount);
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < homesCount; i++) {
     var pin = createPin(homes[i]);
-    fragment.appendChild(pin); console.log(homes[i].author.avatar);
+    fragment.appendChild(pin);
   }
   return fragment;
 };
 
+var homesCount = 8;
 mapPins.appendChild(createPins(homesCount));
 
