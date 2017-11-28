@@ -20,13 +20,22 @@ var getRandomFromArray = function (arr) {
   return arr[index];
 };
 
-function contains(obj, property, elem) {
-  for (var i = 0; i < homes.length; i++) {
-    if (homes[i].obj.property === elem) {
-      getRandomFromArray(elem + 's');
+function getNewUniqueElement(obj, property, array) {
+  while(true) {
+    var elem = getRandomFromArray(array);
+    if (!contains(obj, property, elem)) {
+      return elem;
     }
   }
-  return elem;
+}
+
+function contains(obj, property, elem) {
+  for (var i = 0; i < homes.length; i++) {
+    if (homes[i][obj][property] === elem) {
+      return true;
+    }
+  }
+  return false;
 }
 
 var createHome = function () {
@@ -34,10 +43,10 @@ var createHome = function () {
   var y = getRandom(100, 501);
   return {
     author: {
-      avatar: 'img/avatars/user0' + contains(author, avatar, avatar) + '.png'
+      avatar: 'img/avatars/user0' + getNewUniqueElement('author', 'avatar', avatars) + '.png'
     },
     offer: {
-      title: contains(offer, title, title),
+      title: getNewUniqueElement('offer', 'title', titles),
       address: x + ', ' + y,
       price: getRandom(1000, 1000001),
       type: getRandomFromArray(types),
@@ -101,7 +110,5 @@ var filter = document.querySelector('.map__filters-container');
 map.classList.remove('map--faded');
 var homesCount = 8;
 var homes = createHomes(homesCount);
-var avatar = getRandomFromArray(avatars);
-var title = getRandomFromArray(titles);
 mapPins.appendChild(createPins(homes));
 map.insertBefore(createCard(homes[0]), filter);
