@@ -29,7 +29,7 @@ function getNewUniqueElement(obj, property, array) {
   }
 }
 
-function contains(obj, property, elem) {
+function contains(obj, property, elem, homes) {
   for (var i = 0; i < homes.length; i++) {
     if (homes[i][obj][property] === elem) {
       return true;
@@ -68,7 +68,7 @@ var createHome = function () {
 var createHomes = function (homesCount) {
   var homes = [];
   for (var i = 0; i < homesCount; i++) {
-    homes.push(createHome());
+    homes.push(createHome(homes));
   }
   return homes;
 };
