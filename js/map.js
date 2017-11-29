@@ -1,6 +1,6 @@
 'use strict';
 
-var avatars = [1, 2, 3, 4, 5, 6, 7, 8];
+var avatars = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
 var titles = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var types = ['flat', 'house', 'bungalo'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -20,10 +20,10 @@ var getRandomFromArray = function (arr) {
   return arr[index];
 };
 
-function getNewUniqueElement(obj, property, array) {
+function getNewUniqueElement(obj, property, array, homes) {
   while(true) {
     var elem = getRandomFromArray(array);
-    if (!contains(obj, property, elem)) {
+    if (!contains(obj, property, elem, homes)) {
       return elem;
     }
   }
@@ -38,15 +38,15 @@ function contains(obj, property, elem, homes) {
   return false;
 }
 
-var createHome = function () {
+var createHome = function (homes) {
   var x = getRandom(300, 901);
   var y = getRandom(100, 501);
   return {
     author: {
-      avatar: 'img/avatars/user0' + getNewUniqueElement('author', 'avatar', avatars) + '.png'
+      avatar: getNewUniqueElement('author', 'avatar', avatars, homes)
     },
     offer: {
-      title: getNewUniqueElement('offer', 'title', titles),
+      title: getNewUniqueElement('offer', 'title', titles, homes),
       address: x + ', ' + y,
       price: getRandom(1000, 1000001),
       type: getRandomFromArray(types),
@@ -97,7 +97,14 @@ var createCard = function (home) {
   cardElement.querySelector('h3').textContent = home.offer.title;
   cardElement.querySelector('small').textContent = home.offer.address;
   cardElement.querySelector('.popup__price').innerHTML = home.offer.price + '&#x20bd;/ночь';
-  cardElement.querySelector('h4').textContent = home.offer.type; /*Квартира для flat, Бунгало для bungalo, Дом для house*/
+  var typeHouse = cardElement.querySelector('h4');
+  if (typeHouse.indexOf('квартира')+1) {
+    typeHouse.textContent = 'flat';
+  } else if (typeHouse.indexOf('бунгало')+1) {
+    typeHouse.textContent = 'bungalo';
+  } else {
+    typeHouse.textContent = 'house';
+  }
   cardElement.querySelector('h4 + p').textContent = home.offer.rooms + ' для ' + home.offer.guests + 'гостей';
   cardElement.querySelector('p + p').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
   /*cardElement.querySelector('.popup__features').appendChild(querySelector('li')).classList.add; = home.offer.features;*/
