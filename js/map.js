@@ -91,12 +91,7 @@ var createPins = function (homes) {
   return fragment
 };
 
-var createCard = function (home) {
-  var cardElement = mapCard.cloneNode(true);
-  cardElement.querySelector('.popup__avatar').src = home.author.avatar;
-  cardElement.querySelector('h3').textContent = home.offer.title;
-  cardElement.querySelector('small').textContent = home.offer.address;
-  cardElement.querySelector('.popup__price').innerHTML = home.offer.price + '&#x20bd;/ночь';
+var getTypeHouse = function (cardElement) {
   var typeHouse = cardElement.querySelector('h4');
   if (typeHouse.indexOf('квартира')+1) {
     typeHouse.textContent = 'flat';
@@ -105,6 +100,16 @@ var createCard = function (home) {
   } else {
     typeHouse.textContent = 'house';
   }
+  return typeHouse;
+}
+
+var createCard = function (home) {
+  var cardElement = mapCard.cloneNode(true);
+  cardElement.querySelector('.popup__avatar').src = home.author.avatar;
+  cardElement.querySelector('h3').textContent = home.offer.title;
+  cardElement.querySelector('small').textContent = home.offer.address;
+  cardElement.querySelector('.popup__price').innerHTML = home.offer.price + '&#x20bd;/ночь';
+  cardElement.querySelector('h4') = getTypeHouse(cardElement);
   cardElement.querySelector('h4 + p').textContent = home.offer.rooms + ' для ' + home.offer.guests + 'гостей';
   cardElement.querySelector('p + p').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
   /*cardElement.querySelector('.popup__features').appendChild(querySelector('li')).classList.add; = home.offer.features;*/
