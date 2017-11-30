@@ -131,10 +131,10 @@ var createCard = function (home) {
   cardElement.querySelector('h3').textContent = home.offer.title;
   cardElement.querySelector('small').textContent = home.offer.address;
   cardElement.querySelector('.popup__price').innerHTML = home.offer.price + '&#x20bd;/ночь';
-  cardElement.querySelector('h4').textContent = getTypeHouse(homes, cardElement);
+  cardElement.querySelector('h4').textContent = getTypeHouse(home, cardElement);
   cardElement.querySelector('p:nth-of-type(3)').textContent = home.offer.rooms + ' для ' + home.offer.guests + 'гостей';
   cardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
-  removeChildFeatures(homes, cardElement, features);
+  removeChildFeatures(home, cardElement, features);
   cardElement.querySelector('p:nth-of-type(5)').textContent = home.offer.description;
   return cardElement;
 };
