@@ -33,8 +33,7 @@ function contains(obj, property, elem, array) {
       if (array[i][obj][property] === elem) {
         return true;
       }
-    } else
-    if (array[i] === elem) {
+    } else if (array[i] === elem) {
       return true;
     }
   }
@@ -105,9 +104,9 @@ var createPins = function (homes) {
 
 var getTypeHouse = function (home, cardElement) {
   var typeHouse = cardElement.querySelector('h3').textContent;
-  if (home.offer.type.indexOf('flat') + 1) {
+  if (home.offer.type.indexOf('flat') !== -1) {
     typeHouse = 'Квартира';
-  } else if (home.offer.type.indexOf('bungalo') + 1) {
+  } else if (home.offer.type.indexOf('bungalo') !== -1) {
     typeHouse = 'Бунгало';
   } else {
     typeHouse = 'Дом';
@@ -132,10 +131,10 @@ var createCard = function (home) {
   cardElement.querySelector('h3').textContent = home.offer.title;
   cardElement.querySelector('small').textContent = home.offer.address;
   cardElement.querySelector('.popup__price').innerHTML = home.offer.price + '&#x20bd;/ночь';
-  cardElement.querySelector('h4').textContent = getTypeHouse(homes[0], cardElement);
+  cardElement.querySelector('h4').textContent = getTypeHouse(homes, cardElement);
   cardElement.querySelector('p:nth-of-type(3)').textContent = home.offer.rooms + ' для ' + home.offer.guests + 'гостей';
   cardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
-  removeChildFeatures(homes[0], cardElement, features);
+  removeChildFeatures(homes, cardElement, features);
   cardElement.querySelector('p:nth-of-type(5)').textContent = home.offer.description;
   return cardElement;
 };
