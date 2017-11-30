@@ -25,7 +25,7 @@ var getNewUniqueElement = function (obj, property, array, homes) {
     var elem = getRandomFromArray(array);
   } while (contains(obj, property, elem, homes));
   return elem;
-}
+};
 
 var contains = function (obj, property, elem, array) {
   for (var i = 0; i < array.length; i++) {
@@ -38,7 +38,7 @@ var contains = function (obj, property, elem, array) {
     }
   }
   return false;
-}
+};
 
 var getFeatures = function () {
   var count = getRandom(1, 7);
@@ -47,7 +47,7 @@ var getFeatures = function () {
     featuresRand.push(getNewUniqueElement(null, null, features, featuresRand));
   }
   return featuresRand;
-}
+};
 
 var createHome = function (homes) {
   var x = getRandom(300, 901);
