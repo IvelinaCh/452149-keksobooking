@@ -29,13 +29,27 @@ function getNewUniqueElement(obj, property, array, homes) {
   }
 }
 
-function contains(obj, property, elem, homes) {
-  for (var i = 0; i < homes.length; i++) {
-    if (homes[i][obj][property] === elem) {
+function contains(obj, property, elem, array) {
+  for (var i = 0; i < array.length; i++) {
+    if (obj && property) {
+      if (array[i][obj][property] === elem) {
+        return true;
+      }
+    }
+    else if (array[i] === elem) {
       return true;
     }
   }
   return false;
+}
+
+function getFeatures() {
+  var count = getRandom(1, 7);
+  var featuresRand = [];
+  for (var i = 0; i < count; i++) {
+  featuresRand.push(getNewUniqueElement(null, null, features, featuresRand));
+  }
+  return featuresRand;
 }
 
 var createHome = function (homes) {
@@ -54,7 +68,7 @@ var createHome = function (homes) {
       guests: getRandom(1, 8),
       checkin: getRandomFromArray(times),
       checkout: getRandomFromArray(times),
-      features: getRandomFromArray(features),
+      features: getFeatures(),
       description: '',
       photos: []
     },
@@ -91,16 +105,27 @@ var createPins = function (homes) {
   return fragment
 };
 
-var getTypeHouse = function (cardElement) {
-  var typeHouse = cardElement.querySelector('h4');
-  if (typeHouse.indexOf('квартира')+1) {
-    typeHouse = 'flat';
-  } else if (typeHouse.indexOf('бунгало')+1) {
-    typeHouse = 'bungalo';
+var getTypeHouse = function (home, cardElement) {
+  var typeHouse = cardElement.querySelector('h3').textContent;
+  if (home.offer.type.indexOf('flat')+1) {
+    typeHouse = 'Квартира';
+  } else if (home.offer.type.indexOf('bungalo')+1) {
+    typeHouse = 'Бунгало';
   } else {
-    typeHouse = 'house';
+    typeHouse = 'Дом';
   }
   return typeHouse;
+}
+
+var removeChildFeatures = function (home, cardElement, features) {
+  var popupFeatures = cardElement.querySelector('.popup__features');
+  var featuresList = home.offer.features;
+  for (var i = 0; i < features.length; i++) {
+    if (featuresList.indexOf(features[i]) === -1) {
+      var featureElement = cardElement.querySelector('.feature--' + features[i]);
+      popupFeatures.removeChild(featureElement);
+    }
+  }
 }
 
 var createCard = function (home) {
@@ -109,13 +134,13 @@ var createCard = function (home) {
   cardElement.querySelector('h3').textContent = home.offer.title;
   cardElement.querySelector('small').textContent = home.offer.address;
   cardElement.querySelector('.popup__price').innerHTML = home.offer.price + '&#x20bd;/ночь';
-  cardElement.querySelector('h4').textContent = getTypeHouse(cardElement);
-  cardElement.querySelector('h4 + p').textContent = home.offer.rooms + ' для ' + home.offer.guests + 'гостей';
-  cardElement.querySelector('p + p').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
-  /*cardElement.querySelector('.popup__features').appendChild(querySelector('li')).classList.add; = home.offer.features;*/
-  cardElement.querySelector('.popup__features + p').textContent = home.offer.description;
+  cardElement.querySelector('h4').textContent = getTypeHouse(homes[0], cardElement);
+  cardElement.querySelector('p:nth-of-type(3)').textContent = home.offer.rooms + ' для ' + home.offer.guests + 'гостей';
+  cardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
+  removeChildFeatures(homes[0], cardElement, features);
+  cardElement.querySelector('p:nth-of-type(5)').textContent = home.offer.description;
   return cardElement
-};/*повторения*/
+};
 
 var map = document.querySelector('.map');
 var filter = document.querySelector('.map__filters-container');
