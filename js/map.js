@@ -20,14 +20,14 @@ var getRandomFromArray = function (arr) {
   return arr[index];
 };
 
-function getNewUniqueElement(obj, property, array, homes) {
+var getNewUniqueElement = function (obj, property, array, homes) {
   do {
     var elem = getRandomFromArray(array);
   } while (contains(obj, property, elem, homes));
   return elem;
 }
 
-function contains(obj, property, elem, array) {
+var contains = function (obj, property, elem, array) {
   for (var i = 0; i < array.length; i++) {
     if (obj && property) {
       if (array[i][obj][property] === elem) {
@@ -40,7 +40,7 @@ function contains(obj, property, elem, array) {
   return false;
 }
 
-function getFeatures() {
+var getFeatures = function () {
   var count = getRandom(1, 7);
   var featuresRand = [];
   for (var i = 0; i < count; i++) {
