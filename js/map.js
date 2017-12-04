@@ -6,7 +6,7 @@ var types = ['flat', 'house', 'bungalo'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var times = ['12:00', '13:00', '14:00'];
 var mapTemplate = document.querySelector('template').content;
-var mapPins = document.querySelector('.map__pins');
+var mapPins = mapTemplate.querySelector('.map__pins');
 var mapCard = mapTemplate.querySelector('.map__card');
 var mapPin = mapTemplate.querySelector('.map__pin');
 
@@ -125,7 +125,7 @@ var removeChildFeatures = function (home, cardElement, list) {
   }
 };
 
-var createCard = function (home) {//переделать под весь массив
+var createCard = function (home) {
   var cardElement = mapCard.cloneNode(true);
   cardElement.querySelector('.popup__avatar').src = home.author.avatar;
   cardElement.querySelector('h3').textContent = home.offer.title;
@@ -145,22 +145,21 @@ var homes = createHomes(homesCount);
 var map = document.querySelector('.map');
 var noticeForm = document.querySelector('.notice__form');
 var fieldset = document.querySelectorAll('.notice__form fieldset');
-var pinMain = document.querySelectorAll('.map__pin--main');
+var pinMain = document.querySelector('.map__pin--main');
 for (var i = 1; i < fieldset.length; i++) {
   fieldset[i].setAttribute('disabled', true);
 }
 
-var onpinMainMouseup = function () {
+var onPinMainMouseup = function () {
   map.classList.remove('map--faded');
   noticeForm.classList.remove('notice__form--disabled');
   for (var i = 1; i < fieldset.length; i++) {
     fieldset[i].removeAttribute('disabled', true);
-  }
+  };
   mapPins.appendChild(createPins(homes));
 }
 
-var mapPins = mapTemplate.querySelectorAll('.map__pin');//document.   ...
-pinMain.addEventListener('mouseup', onpinMainMouseup);
+pinMain.addEventListener('mouseup', onPinMainMouseup);
 
 mapPin.addEventListener('click', function () {
   for (var i = 1; i < mapPins.length; i++) {
@@ -170,9 +169,9 @@ mapPin.addEventListener('click', function () {
   map.insertBefore(createCard(homes[i]), filter);
 });
 
-var popupClose = mapTemplate.querySelector('popup__close');//document.   ...
-
+var popupClose = mapCard.querySelector('popup__close');//document.   ...
+/*
 popupClose.addEventListener('click', function () {
-  map.removeChild(createCard(homes[i]), filter);//???  нужно эту ф. отдельно или вложить в mapPin.addEventListener('click', function,
+  map.removeChild(createCard(homes[i]), filter);//;???  нужно эту ф. отдельно или вложить в mapPin.addEventListener('click', function,
   mapPin.classList.remove('map__pin--active');
-});
+});*/
