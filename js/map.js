@@ -137,6 +137,7 @@ var createCard = function (home) {
   cardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
   removeChildFeatures(home, cardElement, features);
   cardElement.querySelector('p:nth-of-type(5)').textContent = home.offer.description;
+  addPopupCloseListener(cardElement);
   return cardElement;
 };
 
@@ -144,6 +145,7 @@ var filter = document.querySelector('.map__filters-container');
 var homesCount = 8;
 var homes = createHomes(homesCount);
 var map = document.querySelector('.map');
+var card = map.querySelector('.popup');
 var noticeForm = document.querySelector('.notice__form');
 var fieldset = document.querySelectorAll('.notice__form fieldset');
 var pinMain = document.querySelector('.map__pin--main');
@@ -153,7 +155,7 @@ for (var i = 1; i < fieldset.length; i++) {
 }
 
 var changeActivPin = function () {
-  var mapPinsItems = mapPins.querySelectorAll('.map__pin');
+  var mapPinsItems = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
   for (var i = 0; i < mapPinsItems.length; i++) {
     mapPinsItems[i].addEventListener('click', function (evt) {
       var index = evt.currentTarget.dataset.index;
@@ -184,11 +186,19 @@ var onPinMainMouseup = function (mapPinsItems) {
   }
 }
 
+var addPopupCloseListener = function (cardElement) {
+  var popupClose = cardElement.querySelector('.popup__close');
+  popupClose.addEventListener('click', function (card) {
+    map.removeChild(card);
+  });
+}
+/*
+var closeCard = function (mapCard) {
+  map.removeChild(mapCard);
+  for (var i = 0; i < mapPinsItems.length; i++) {
+    mapPinsItems[i].classList.remove('map__pin--active');
+  }
+}*/
+
 pinMain.addEventListener('mouseup', onPinMainMouseup);
 
-var popupClose = mapCard.querySelector('.popup__close');
-
-popupClose.addEventListener('click', function () {
-  //var index = evt.currentTarget.dataset.index;
-  map.removeChild(mapCard);
-});
