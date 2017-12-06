@@ -6,7 +6,7 @@ var types = ['flat', 'house', 'bungalo'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var times = ['12:00', '13:00', '14:00'];
 var mapTemplate = document.querySelector('template').content;
-var mapPins = document.querySelector('.map__pins');
+var mapPinsConatiner = document.querySelector('.map__pins');
 var mapCard = mapTemplate.querySelector('.map__card');
 var mapPin = mapTemplate.querySelector('.map__pin');
 
@@ -148,20 +148,21 @@ var map = document.querySelector('.map');
 var noticeForm = document.querySelector('.notice__form');
 var fieldset = document.querySelectorAll('.notice__form fieldset');
 var pinMain = document.querySelector('.map__pin--main');
-var mapPinsItems = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
 for (var i = 1; i < fieldset.length; i++) {
   fieldset[i].setAttribute('disabled', true);
 }
 
 var changeActivPin = function (mapPinsItems) {
-  var mapPinsItems = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+  var mapPinsItems = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
   addPinsClickEvents(mapPinsItems);
 }
 
-var addPinsClickEvents = function (mapPinsItems, mapPins) {
-  for (var i = 0; i < mapPinsItems.length; i++) {
-    mapPinsItems[i].addEventListener('click', function (evt) {
+var addPinsClickEvents = function (mapPins) {
+  for (var i = 0; i < mapPins.length; i++) {
+    mapPins[i].addEventListener('click', function (evt) {
       onPinClick(evt, mapPins);
     });
   }
@@ -196,17 +197,21 @@ var activateHome = function(pin) {
 
   var index = pin.dataset.index;
   map.insertBefore(createCard(homes[index]), filter);
+
+  //закрытие окна по еск
 }
 
-var onPinMainMouseup = function (mapPinsItems) {
+var onPinMainMouseup = function () {
   if (map.classList.contains('map--faded')) {
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     for (var i = 1; i < fieldset.length; i++) {
       fieldset[i].removeAttribute('disabled', true);
     }
-    mapPins.appendChild(createPins(homes));
-    changeActivPin();
+    mapPinsConatiner.appendChild(createPins(homes));
+    var mapPinsItems = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+    addPinsClickEvents(mapPinsItems);
+    //changeActivPin();
   } else {
     for (var j = 0; j < mapPinsItems.length; j++) {
       mapPinsItems[j].classList.remove('map__pin--active');
@@ -222,7 +227,15 @@ var addPopupCloseListener = function (cardElement) {
     map.removeChild(cardElement);
     deactivatePins();
   });
+
+  popupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      map.removeChild(cardElement);
+      deactivatePins();
+    }
+  });
 }
 
 pinMain.addEventListener('mouseup', onPinMainMouseup);
 
+//42slide in demo - wtf     why to remove listener
