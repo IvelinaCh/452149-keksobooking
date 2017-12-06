@@ -137,7 +137,6 @@ var createCard = function (home) {
   cardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + home.offer.checkin + ', выезд до ' + home.offer.checkout;
   removeChildFeatures(home, cardElement, features);
   cardElement.querySelector('p:nth-of-type(5)').textContent = home.offer.description;
-  addPopupCloseListener(cardElement);
   return cardElement;
 };
 
@@ -192,11 +191,14 @@ var deactivatePins = function(mapPinsItems) {
   }
 }
 
-var activateHome = function(pin) {
+var activateHome = function(pin, mapPins) {
   pin.classList.add('map__pin--active');
 
   var index = pin.dataset.index;
-  map.insertBefore(createCard(homes[index]), filter);
+  var cardElement = createCard(homes[index]);
+  map.insertBefore(cardElement, filter);
+
+  addPopupCloseListener(cardElement, mapPins);
 
   //закрытие окна по еск
 }
@@ -220,18 +222,18 @@ var onPinMainMouseup = function () {
   }
 }
 
-var addPopupCloseListener = function (cardElement) {
+var addPopupCloseListener = function (cardElement, mapPins) {
   var popupClose = cardElement.querySelector('.popup__close');
 
   popupClose.addEventListener('click', function () {
     map.removeChild(cardElement);
-    deactivatePins();
+    deactivatePins(mapPins);
   });
 
   popupClose.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       map.removeChild(cardElement);
-      deactivatePins();
+      deactivatePins(mapPins);
     }
   });
 }
