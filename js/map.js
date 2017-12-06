@@ -150,48 +150,53 @@ var pinMain = document.querySelector('.map__pin--main');
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
-for (var i = 1; i < fieldset.length; i++) {
-  fieldset[i].setAttribute('disabled', true);
+for (var k = 1; k < fieldset.length; k++) {
+  fieldset[k].setAttribute('disabled', true);
 }
-
-var changeActivPin = function (mapPinsItems) {
-  var mapPinsItems = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
-  addPinsClickEvents(mapPinsItems);
-}
-
+/*
+var changeActivPin = function (mapPins) {
+  //var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+  addPinsClickEvents(mapPins);
+};
+*/
 var addPinsClickEvents = function (mapPins) {
   for (var i = 0; i < mapPins.length; i++) {
     mapPins[i].addEventListener('click', function (evt) {
       onPinClick(evt, mapPins);
     });
+    mapPins[i].addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        onPinClick(evt, mapPins);
+      }
+    });
   }
-}
+};
 
-var onPinClick = function(evt, mapPins) {
+var onPinClick = function (evt, mapPins) {
 
   removeCurrentCard();
 
   deactivatePins(mapPins);
 
   var openedPin = evt.currentTarget;
-  activateHome(openedPin);
-}
+  activateHome(openedPin, mapPins);
+};
 
-var removeCurrentCard = function() {
+var removeCurrentCard = function () {
   var currentCard = document.querySelector('.map__card');
   if (currentCard) {
     map.removeChild(currentCard);
   }
-}
+};
 
-var deactivatePins = function(mapPinsItems) {
+var deactivatePins = function (mapPins) {
   pinMain.classList.remove('map__pin--active');
-  for (var j = 0; j < mapPinsItems.length; j++) {
-    mapPinsItems[j].classList.remove('map__pin--active');
+  for (var j = 0; j < mapPins.length; j++) {
+    mapPins[j].classList.remove('map__pin--active');
   }
-}
+};
 
-var activateHome = function(pin, mapPins) {
+var activateHome = function (pin, mapPins) {
   pin.classList.add('map__pin--active');
 
   var index = pin.dataset.index;
@@ -200,7 +205,14 @@ var activateHome = function(pin, mapPins) {
 
   addPopupCloseListener(cardElement, mapPins);
 
-  //закрытие окна по еск
+  document.addEventListener('keydown', xxx);
+};
+
+var xxx = function (evt, mapPins) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    removeCurrentCard();
+    deactivatePins(mapPins);
+  }
 }
 
 var onPinMainMouseup = function () {
@@ -211,33 +223,31 @@ var onPinMainMouseup = function () {
       fieldset[i].removeAttribute('disabled', true);
     }
     mapPinsConatiner.appendChild(createPins(homes));
-    var mapPinsItems = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
-    addPinsClickEvents(mapPinsItems);
-    //changeActivPin();
+    var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+    addPinsClickEvents(mapPins);
   } else {
-    for (var j = 0; j < mapPinsItems.length; j++) {
-      mapPinsItems[j].classList.remove('map__pin--active');
-    }
+    deactivatePins(mapPins);
+    /* for (var j = 0; j < mapPins.length; j++) {
+      mapPins[j].classList.remove('map__pin--active');
+}*/
     pinMain.classList.add('map__pin--active');
   }
-}
+};
 
 var addPopupCloseListener = function (cardElement, mapPins) {
   var popupClose = cardElement.querySelector('.popup__close');
 
   popupClose.addEventListener('click', function () {
-    map.removeChild(cardElement);
+    removeCurrentCard();
     deactivatePins(mapPins);
   });
 
   popupClose.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      map.removeChild(cardElement);
+    if (evt.keyCode === ENTER_KEYCODE) {
+      removeCurrentCard();
       deactivatePins(mapPins);
     }
   });
-}
+};
 
 pinMain.addEventListener('mouseup', onPinMainMouseup);
-
-//42slide in demo - wtf     why to remove listener
