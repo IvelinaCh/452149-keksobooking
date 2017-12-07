@@ -205,15 +205,16 @@ var activateHome = function (pin, mapPins) {
 
   addPopupCloseListener(cardElement, mapPins);
 
-  document.addEventListener('keydown', xxx);
+  var onEscDown = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      removeCurrentCard();
+      deactivatePins(mapPins);
+    }
+    document.removeEventListener('keydown', onEscDown);
+  };
+  document.addEventListener('keydown', onEscDown);
 };
 
-var xxx = function (evt, mapPins) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    removeCurrentCard();
-    deactivatePins(mapPins);
-  }
-}
 
 var onPinMainMouseup = function () {
   if (map.classList.contains('map--faded')) {
