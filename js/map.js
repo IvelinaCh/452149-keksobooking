@@ -6,7 +6,7 @@ var types = ['flat', 'house', 'bungalo'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var times = ['12:00', '13:00', '14:00'];
 var mapTemplate = document.querySelector('template').content;
-var mapPins = document.querySelector('.map__pins');
+var mapPinsConatiner = document.querySelector('.map__pins');
 var mapCard = mapTemplate.querySelector('.map__card');
 var mapPin = mapTemplate.querySelector('.map__pin');
 
@@ -98,6 +98,7 @@ var createPins = function (homes) {
   for (var i = 0; i < homes.length; i++) {
     var pin = createPin(homes[i]);
     fragment.appendChild(pin);
+    pin.dataset.index = i;
   }
   return fragment;
 };
@@ -139,10 +140,115 @@ var createCard = function (home) {
   return cardElement;
 };
 
-var map = document.querySelector('.map');
 var filter = document.querySelector('.map__filters-container');
-map.classList.remove('map--faded');
 var homesCount = 8;
 var homes = createHomes(homesCount);
-mapPins.appendChild(createPins(homes));
-map.insertBefore(createCard(homes[0]), filter);
+var map = document.querySelector('.map');
+var noticeForm = document.querySelector('.notice__form');
+var fieldset = document.querySelectorAll('.notice__form fieldset');
+var pinMain = document.querySelector('.map__pin--main');
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+for (var k = 1; k < fieldset.length; k++) {
+  fieldset[k].setAttribute('disabled', true);
+}
+/*
+var changeActivPin = function (mapPins) {
+  //var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+  addPinsClickEvents(mapPins);
+};
+*/
+var addPinsClickEvents = function (mapPins) {
+  for (var i = 0; i < mapPins.length; i++) {
+    mapPins[i].addEventListener('click', function (evt) {
+      onPinClick(evt, mapPins);
+    });
+    mapPins[i].addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        onPinClick(evt, mapPins);
+      }
+    });
+  }
+};
+
+var onPinClick = function (evt, mapPins) {
+
+  removeCurrentCard();
+
+  deactivatePins(mapPins);
+
+  var openedPin = evt.currentTarget;
+  activateHome(openedPin, mapPins);
+};
+
+var removeCurrentCard = function () {
+  var currentCard = document.querySelector('.map__card');
+  if (currentCard) {
+    map.removeChild(currentCard);
+  }
+};
+
+var deactivatePins = function (mapPins) {
+  pinMain.classList.remove('map__pin--active');
+  for (var j = 0; j < mapPins.length; j++) {
+    mapPins[j].classList.remove('map__pin--active');
+  }
+};
+
+var activateHome = function (pin, mapPins) {
+  pin.classList.add('map__pin--active');
+
+  var index = pin.dataset.index;
+  var cardElement = createCard(homes[index]);
+  map.insertBefore(cardElement, filter);
+
+  addPopupCloseListener(cardElement, mapPins);
+
+  var onEscDown = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      removeCurrentCard();
+      deactivatePins(mapPins);
+    }
+    document.removeEventListener('keydown', onEscDown);
+  };
+  document.addEventListener('keydown', onEscDown);
+};
+
+
+var onPinMainMouseup = function () {
+  if (map.classList.contains('map--faded')) {
+    map.classList.remove('map--faded');
+    noticeForm.classList.remove('notice__form--disabled');
+    for (var i = 1; i < fieldset.length; i++) {
+      fieldset[i].removeAttribute('disabled', true);
+    }
+    mapPinsConatiner.appendChild(createPins(homes));
+    var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+    addPinsClickEvents(mapPins);
+  } else {
+    deactivatePins(mapPins);
+    /* for (var j = 0; j < mapPins.length; j++) {
+      mapPins[j].classList.remove('map__pin--active');
+}*/
+    pinMain.classList.add('map__pin--active');
+  }
+};
+
+var addPopupCloseListener = function (cardElement, mapPins) {
+  var popupClose = cardElement.querySelector('.popup__close');
+
+  popupClose.addEventListener('click', function () {
+    removeCurrentCard();
+    deactivatePins(mapPins);
+  });
+
+  popupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      removeCurrentCard();
+      deactivatePins(mapPins);
+    }
+  });
+};
+
+pinMain.addEventListener('mouseup', onPinMainMouseup);
