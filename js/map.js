@@ -153,7 +153,12 @@ var ENTER_KEYCODE = 13;
 for (var k = 1; k < fieldset.length; k++) {
   fieldset[k].setAttribute('disabled', true);
 }
-
+/*
+var changeActivPin = function (mapPins) {
+  //var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+  addPinsClickEvents(mapPins);
+};
+*/
 var addPinsClickEvents = function (mapPins) {
   for (var i = 0; i < mapPins.length; i++) {
     mapPins[i].addEventListener('click', function (evt) {
@@ -247,3 +252,55 @@ var addPopupCloseListener = function (cardElement, mapPins) {
 };
 
 pinMain.addEventListener('mouseup', onPinMainMouseup);
+
+var timein = noticeForm.querySelector('#timein');
+var timeout = noticeForm.querySelector('#timeout');
+var typeHome = noticeForm.querySelector('#type');
+var priceHome = noticeForm.querySelector('#price');
+var roomNumber = noticeForm.querySelector('#room_number');
+var capacity = noticeForm.querySelector('#capacity');
+
+for (var n = 0; n < capacity.length; n++) {
+  capacity.options[n].disabled = true;
+}
+
+timein.addEventListener('change', function () {
+  timeout.selectedIndex = timein.selectedIndex;
+});
+
+timeout.addEventListener('change', function () {
+  timein.selectedIndex = timeout.selectedIndex;
+});
+
+typeHome.addEventListener('change', function () {
+  if (typeHome.options[0].selected) {
+    priceHome.min = 1000;
+  } else if (typeHome.options[1].selected) {
+    priceHome.min = 0;
+  } else if (typeHome.options[2].selected) {
+    priceHome.min = 5000;
+  } else if (typeHome.options[3].selected) {
+    priceHome.min = 10000;
+  }
+});
+
+var onSelectRooms = function () {
+  if (roomNumber.options[0].selected) {
+    capacity.options[2].disabled = false;
+    capacity.options[2].selected = true;
+  } else if (roomNumber.options[1].selected) {
+    capacity.options[1].disabled = false;
+    capacity.options[2].disabled = false;
+    capacity.options[1].selected = true;
+  } else if (roomNumber.options[2].selected) {
+    capacity.options[0].disabled = false;
+    capacity.options[1].disabled = false;
+    capacity.options[2].disabled = false;
+    capacity.options[0].selected = true;
+  } else if (roomNumber.options[3].selected) {
+    capacity.options[3].disabled = false;
+    capacity.options[3].selected = true;
+  }
+};
+
+roomNumber.addEventListener('change', onSelectRooms);
