@@ -217,6 +217,9 @@ var activateHome = function (pin, mapPins) {
 
 
 var onPinMainMouseup = function () {
+  for (var n = 0; n < capacity.length; n++) {
+    capacity.options[n].disabled = true;
+  }
   if (map.classList.contains('map--faded')) {
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
@@ -257,10 +260,6 @@ var priceHome = noticeForm.querySelector('#price');
 var roomNumber = noticeForm.querySelector('#room_number');
 var capacity = noticeForm.querySelector('#capacity');
 
-for (var n = 0; n < capacity.length; n++) {
-  capacity.options[n].disabled = true;
-}
-
 timein.addEventListener('change', function () {
   timeout.selectedIndex = timein.selectedIndex;
 });
@@ -282,21 +281,14 @@ typeHome.addEventListener('change', function () {
 });
 
 var onSelectRooms = function () {
-  if (roomNumber.options[0].selected) {
-    capacity.options[2].disabled = false;
-    capacity.options[2].selected = true;
-  } else if (roomNumber.options[1].selected) {
-    capacity.options[1].disabled = false;
-    capacity.options[2].disabled = false;
-    capacity.options[1].selected = true;
-  } else if (roomNumber.options[2].selected) {
-    capacity.options[0].disabled = false;
-    capacity.options[1].disabled = false;
-    capacity.options[2].disabled = false;
-    capacity.options[0].selected = true;
-  } else if (roomNumber.options[3].selected) {
-    capacity.options[3].disabled = false;
-    capacity.options[3].selected = true;
+  for (var i = 0; i < capacity.length; i++) {
+    if (roomNumber.value === '100') {
+      capacity.options[i].disabled = (capacity.options[i].value !== 0);
+      capacity.value = '0';
+      continue;
+    }
+    capacity.options[i].disabled = (capacity.options[i].value > roomNumber.value || capacity.options[i].value === '0');
+    capacity.value = '1';
   }
 };
 
