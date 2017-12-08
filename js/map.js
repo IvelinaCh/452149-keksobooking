@@ -228,9 +228,6 @@ var onPinMainMouseup = function () {
     addPinsClickEvents(mapPins);
   } else {
     deactivatePins(mapPins);
-    /* for (var j = 0; j < mapPins.length; j++) {
-      mapPins[j].classList.remove('map__pin--active');
-}*/
     pinMain.classList.add('map__pin--active');
   }
 };
