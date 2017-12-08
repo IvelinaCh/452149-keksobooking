@@ -153,12 +153,7 @@ var ENTER_KEYCODE = 13;
 for (var k = 1; k < fieldset.length; k++) {
   fieldset[k].setAttribute('disabled', true);
 }
-/*
-var changeActivPin = function (mapPins) {
-  //var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
-  addPinsClickEvents(mapPins);
-};
-*/
+
 var addPinsClickEvents = function (mapPins) {
   for (var i = 0; i < mapPins.length; i++) {
     mapPins[i].addEventListener('click', function (evt) {
