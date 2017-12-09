@@ -283,7 +283,7 @@ typeHome.addEventListener('change', function () {
 var onSelectRooms = function () {
   for (var i = 0; i < capacity.length; i++) {
     if (roomNumber.value === '100') {
-      capacity.options[i].disabled = (capacity.options[i].value !== 0);
+      capacity.options[i].disabled = (capacity.options[i].value !== '0');
       capacity.value = '0';
       continue;
     }
