@@ -217,6 +217,9 @@ var activateHome = function (pin, mapPins) {
 
 
 var onPinMainMouseup = function () {
+  for (var n = 0; n < capacity.length; n++) {
+    capacity.options[n].disabled = true;
+  }
   if (map.classList.contains('map--faded')) {
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
@@ -228,9 +231,6 @@ var onPinMainMouseup = function () {
     addPinsClickEvents(mapPins);
   } else {
     deactivatePins(mapPins);
-    /* for (var j = 0; j < mapPins.length; j++) {
-      mapPins[j].classList.remove('map__pin--active');
-}*/
     pinMain.classList.add('map__pin--active');
   }
 };
@@ -252,3 +252,44 @@ var addPopupCloseListener = function (cardElement, mapPins) {
 };
 
 pinMain.addEventListener('mouseup', onPinMainMouseup);
+
+var timein = noticeForm.querySelector('#timein');
+var timeout = noticeForm.querySelector('#timeout');
+var typeHome = noticeForm.querySelector('#type');
+var priceHome = noticeForm.querySelector('#price');
+var roomNumber = noticeForm.querySelector('#room_number');
+var capacity = noticeForm.querySelector('#capacity');
+
+timein.addEventListener('change', function () {
+  timeout.selectedIndex = timein.selectedIndex;
+});
+
+timeout.addEventListener('change', function () {
+  timein.selectedIndex = timeout.selectedIndex;
+});
+
+typeHome.addEventListener('change', function () {
+  if (typeHome.options[0].selected) {
+    priceHome.min = 1000;
+  } else if (typeHome.options[1].selected) {
+    priceHome.min = 0;
+  } else if (typeHome.options[2].selected) {
+    priceHome.min = 5000;
+  } else if (typeHome.options[3].selected) {
+    priceHome.min = 10000;
+  }
+});
+
+var onSelectRooms = function () {
+  for (var i = 0; i < capacity.length; i++) {
+    if (roomNumber.value === '100') {
+      capacity.options[i].disabled = (capacity.options[i].value !== '0');
+      capacity.value = '0';
+      continue;
+    }
+    capacity.options[i].disabled = (capacity.options[i].value > roomNumber.value || capacity.options[i].value === '0');
+    capacity.value = '1';
+  }
+};
+
+roomNumber.addEventListener('change', onSelectRooms);
