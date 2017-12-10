@@ -1,11 +1,19 @@
 'use strict';
 
-window.pin = (function (dataModule, mapModule) {
+window.pin = (function (dataModule, mapModule, cardModule) {
   var filter = document.querySelector('.map__filters-container');
+  var mapPin = mapTemplate.querySelector('.map__pin');
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+
   var homes = dataModule.homes;
+  var map = mapModule.map;
   var mapPins = mapModule.mapPins;
+  var mapTemplate = mapModule.mapTemplate;
+  var pinMain = mapModule.pinMain;
+  var createCard = cardModule.createCard;
+  var addPopupCloseListener = cardModule.addPopupCloseListener;
+  var removeCurrentCard = cardModule.removeCurrentCard;
 
   var createPin = function (homes) {
     var pinElement = mapPin.cloneNode(true);
@@ -75,5 +83,8 @@ window.pin = (function (dataModule, mapModule) {
     document.addEventListener('keydown', onEscDown);
   };
   return {
+    deactivatePins: deactivatePins,
+    createPins: createPins,
+    addPinsClickEvents: addPinsClickEvents
   };
-})(window.data, window.map);
+})(window.data, window.map, window.card);

@@ -1,13 +1,18 @@
 'use strict';
 
-window.map = (function (formModule) {
-  var mapPin = mapTemplate.querySelector('.map__pin');
+window.map = (function (dataModule, formModule, pinModule) {
+  var mapTemplate = document.querySelector('template').content;
   var map = document.querySelector('.map');
   var mapPinsConatiner = document.querySelector('.map__pins');
   var pinMain = document.querySelector('.map__pin--main');
+
+  var homes = dataModule.homes;
   var capacity = formModule.capacity;
   var noticeForm = formModule.noticeForm;
   var fieldset = formModule.fieldset;
+  var createPins = pinModule.createPins;
+  var deactivatePins = pinModule.deactivatePins;
+  var addPinsClickEvents = pinModule.addPinsClickEvents;
 
   var onPinMainMouseup = function () {
     for (var n = 0; n < capacity.length; n++) {
@@ -31,7 +36,8 @@ window.map = (function (formModule) {
   pinMain.addEventListener('mouseup', onPinMainMouseup);
   return {
     mapPins: mapPins,
-    map: map
+    map: map,
+    mapTemplate: mapTemplate,
+    pinMain: pinMain
   };
-})(window.form);
-
+})(window.data, window.form, window.pin);
