@@ -1,12 +1,12 @@
 'use strict';
 
-window.card = (function (dataModule, mapModule, pinModule) {
+window.card = (function (dataModule) {
+  var mapTemplate = document.querySelector('template').content;
   var mapCard = mapTemplate.querySelector('.map__card');
+  var map = document.querySelector('.map');
 
-  var mapTemplate = mapModule.mapTemplate;
   var features = dataModule.features;
-  var map = mapModule.map;
-  var deactivatePins = pinModule.deactivatePins;
+  //var deactivatePins = pinModule.deactivatePins;
   var ENTER_KEYCODE = 13;
 
   var getTypeHouse = function (home, cardElement) {
@@ -53,7 +53,7 @@ window.card = (function (dataModule, mapModule, pinModule) {
     }
   };
 
-  var addPopupCloseListener = function (cardElement, mapPins) {
+  /*var addPopupCloseListener = function (cardElement, mapPins) {
     var popupClose = cardElement.querySelector('.popup__close');
 
     popupClose.addEventListener('click', function () {
@@ -67,10 +67,13 @@ window.card = (function (dataModule, mapModule, pinModule) {
         deactivatePins(mapPins);
       }
     });
-  };
+  };*/
   return {
     createCard: createCard,
     addPopupCloseListener: addPopupCloseListener,
-    removeCurrentCard: removeCurrentCard
+    removeCurrentCard: removeCurrentCard,
+    map: map,
+    cardElement: cardElement,
+    mapTemplate: mapTemplate
   };
-})(window.data, window.map, window.pin);
+})(window.data);
