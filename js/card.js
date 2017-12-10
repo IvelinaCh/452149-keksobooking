@@ -1,9 +1,12 @@
 'use strict';
 
+window.card = (function (dataModule, mapModule) {
+
 var mapTemplate = document.querySelector('template').content;
-var mapPinsConatiner = document.querySelector('.map__pins');
 var mapCard = mapTemplate.querySelector('.map__card');
-var mapPin = mapTemplate.querySelector('.map__pin');
+var homes = dataModule.homes;
+var map = mapModule.map;
+var mapPins = mapModule.mapPins;
 
 var getTypeHouse = function (home, cardElement) {
   var typeHouse = cardElement.querySelector('h3').textContent;
@@ -64,3 +67,6 @@ var addPopupCloseListener = function (cardElement, mapPins) {
     }
   });
 };
+  return {
+  };
+})(window.data, window.map);
