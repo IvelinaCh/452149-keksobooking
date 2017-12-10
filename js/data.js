@@ -6,8 +6,6 @@ window.data = (function () {
   var types = ['flat', 'house', 'bungalo'];
   var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var times = ['12:00', '13:00', '14:00'];
-  var homesCount = 8;
-  var homes = createHomes(homesCount);
 
   var getRandom = function (min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -81,7 +79,12 @@ window.data = (function () {
     }
     return homes;
   };
+
+  var homesCount = 8;
+  var homes = createHomes(homesCount);
+
   return {
-    homes: homes
+    homes: homes,
+    features: features
   };
 })();

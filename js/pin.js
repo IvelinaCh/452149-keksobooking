@@ -6,9 +6,7 @@ window.pin = (function (dataModule, mapModule, cardModule) {
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
-  var homes = dataModule.homes;
   var map = mapModule.map;
-  var mapPins = mapModule.mapPins;
   var mapTemplate = mapModule.mapTemplate;
   var pinMain = mapModule.pinMain;
   var createCard = cardModule.createCard;
@@ -82,6 +80,10 @@ window.pin = (function (dataModule, mapModule, cardModule) {
     };
     document.addEventListener('keydown', onEscDown);
   };
+
+
+  var homes = dataModule.homes;
+
   return {
     deactivatePins: deactivatePins,
     createPins: createPins,

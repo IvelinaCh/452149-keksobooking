@@ -5,6 +5,7 @@ window.map = (function (dataModule, formModule, pinModule) {
   var map = document.querySelector('.map');
   var mapPinsConatiner = document.querySelector('.map__pins');
   var pinMain = document.querySelector('.map__pin--main');
+  var mapPins = [];
 
   var homes = dataModule.homes;
   var capacity = formModule.capacity;
@@ -25,7 +26,10 @@ window.map = (function (dataModule, formModule, pinModule) {
         fieldset[i].removeAttribute('disabled', true);
       }
       mapPinsConatiner.appendChild(createPins(homes));
-      var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var pins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+      for (var j = 1; j < pins.length; j++) {
+        mapPins.push(pins[j]);
+      }
       addPinsClickEvents(mapPins);
     } else {
       deactivatePins(mapPins);

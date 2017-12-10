@@ -4,9 +4,8 @@ window.card = (function (dataModule, mapModule, pinModule) {
   var mapCard = mapTemplate.querySelector('.map__card');
 
   var mapTemplate = mapModule.mapTemplate;
-  var homes = dataModule.homes;
+  var features = dataModule.features;
   var map = mapModule.map;
-  var mapPins = mapModule.mapPins;
   var deactivatePins = pinModule.deactivatePins;
   var ENTER_KEYCODE = 13;
 
