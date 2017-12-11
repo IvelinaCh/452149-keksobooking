@@ -6,7 +6,6 @@ window.card = (function (dataModule) {
   var map = document.querySelector('.map');
 
   var features = dataModule.features;
-  //var deactivatePins = pinModule.deactivatePins;
   var ENTER_KEYCODE = 13;
 
   var getTypeHouse = function (home, cardElement) {

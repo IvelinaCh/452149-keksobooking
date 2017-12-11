@@ -10,8 +10,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
   var pinMain = document.querySelector('.map__pin--main');
   var mapPins = [];
 
-  var cardElement = cardModule.cardElement;
-  var map = cardModule.map;addPopupCloseListener
+  var map = cardModule.map;
   var createCard = cardModule.createCard;
   var addPopupCloseListener = cardModule.addPopupCloseListener;
   var removeCurrentCard = cardModule.removeCurrentCard;
@@ -109,25 +108,9 @@ window.pin = (function (dataModule, formModule, cardModule) {
     }
   };
 
-  var addMainPinEvent = function (map) {
+  var addMainPinEvent = function () {
     pinMain.addEventListener('mouseup', onPinMainMouseup);
   };
-
-  /*var addPopupCloseListener = function (cardElement, mapPins) {
-    var popupClose = cardElement.querySelector('.popup__close');
-
-    popupClose.addEventListener('click', function () {
-      removeCurrentCard();
-      deactivatePins(mapPins);
-    });
-
-    popupClose.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        removeCurrentCard();
-        deactivatePins(mapPins);
-      }
-    });
-  };*/
 
   var homes = dataModule.homes;
 
