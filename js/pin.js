@@ -6,10 +6,9 @@ window.pin = (function (dataModule, formModule, cardModule) {
   var mapPin = mapTemplate.querySelector('.map__pin');
   var mapPinsConatiner = document.querySelector('.map__pins');
   var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
   var pinMain = document.querySelector('.map__pin--main');
-  var mapPins = [];
 
+  var ENTER_KEYCODE = cardModule.ENTER_KEYCODE;
   var map = cardModule.map;
   var createCard = cardModule.createCard;
   var addPopupCloseListener = cardModule.addPopupCloseListener;
@@ -97,10 +96,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
         fieldset[i].removeAttribute('disabled', true);
       }
       mapPinsConatiner.appendChild(createPins(homes));
-      var pins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
-      for (var j = 1; j < pins.length; j++) {
-        mapPins.push(pins[j]);
-      }
+      var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
       addPinsClickEvents(mapPins);
     } else {
       deactivatePins(mapPins);
@@ -115,11 +111,6 @@ window.pin = (function (dataModule, formModule, cardModule) {
   var homes = dataModule.homes;
 
   return {
-    mapPins: mapPins,
-    pinMain: pinMain,
-    deactivatePins: deactivatePins,
-    createPins: createPins,
-    addPinsClickEvents: addPinsClickEvents,
     addMainPinEvent: addMainPinEvent
   };
 })(window.data, window.form, window.card);

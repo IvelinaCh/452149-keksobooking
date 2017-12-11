@@ -72,6 +72,7 @@ window.card = (function (dataModule) {
     removeCurrentCard: removeCurrentCard,
     map: map,
     mapTemplate: mapTemplate,
-    addPopupCloseListener: addPopupCloseListener
+    addPopupCloseListener: addPopupCloseListener,
+    ENTER_KEYCODE: ENTER_KEYCODE
   };
 })(window.data);
