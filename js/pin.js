@@ -75,7 +75,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
     var cardElement = createCard(homes[index]);
     map.insertBefore(cardElement, filter);
 
-    addPopupCloseListener(cardElement, mapPins);
+    addPopupCloseListener(cardElement, mapPins, deactivatePins);
 
     var onEscDown = function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
