@@ -11,7 +11,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
   var mapPins = [];
 
   var cardElement = cardModule.cardElement;
-  var map = cardModule.map;
+  var map = cardModule.map;addPopupCloseListener
   var createCard = cardModule.createCard;
   var addPopupCloseListener = cardModule.addPopupCloseListener;
   var removeCurrentCard = cardModule.removeCurrentCard;
@@ -113,7 +113,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
     pinMain.addEventListener('mouseup', onPinMainMouseup);
   };
 
-  var addPopupCloseListener = function (cardElement, mapPins) {
+  /*var addPopupCloseListener = function (cardElement, mapPins) {
     var popupClose = cardElement.querySelector('.popup__close');
 
     popupClose.addEventListener('click', function () {
@@ -127,7 +127,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
         deactivatePins(mapPins);
       }
     });
-  };
+  };*/
 
   var homes = dataModule.homes;
 

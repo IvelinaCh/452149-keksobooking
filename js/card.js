@@ -53,7 +53,7 @@ window.card = (function (dataModule) {
     }
   };
 
-  /*var addPopupCloseListener = function (cardElement, mapPins) {
+  var addPopupCloseListener = function (cardElement, mapPins, deactivatePins) {
     var popupClose = cardElement.querySelector('.popup__close');
 
     popupClose.addEventListener('click', function () {
@@ -67,13 +67,12 @@ window.card = (function (dataModule) {
         deactivatePins(mapPins);
       }
     });
-  };*/
+  };
   return {
     createCard: createCard,
-    addPopupCloseListener: addPopupCloseListener,
     removeCurrentCard: removeCurrentCard,
     map: map,
-    cardElement: cardElement,
-    mapTemplate: mapTemplate
+    mapTemplate: mapTemplate,
+    addPopupCloseListener: addPopupCloseListener
   };
 })(window.data);

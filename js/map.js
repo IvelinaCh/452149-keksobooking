@@ -1,7 +1,7 @@
 'use strict';
 
-window.map = (function (dataModule, formModule, pinModule) {
-  var map = pinModule.map;
+window.map = (function (dataModule, formModule, cardModule, pinModule) {
+  var map = cardModule.map;
   var pinMain = pinModule.pinMain;
   var mapPins = pinModule.mapPins;
 
@@ -14,4 +14,4 @@ window.map = (function (dataModule, formModule, pinModule) {
 
   return {
   };
-})(window.data, window.form, window.pin);
+})(window.data, window.form, window.card, window.pin);
