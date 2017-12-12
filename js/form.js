@@ -14,6 +14,7 @@ window.form = (function () {
   var priceHome = noticeForm.querySelector('#price');
   var roomNumber = noticeForm.querySelector('#room_number');
   var capacity = noticeForm.querySelector('#capacity');
+  var myAddress = noticeForm.querySelector('#address');
 
   timein.addEventListener('change', function () {
     timeout.selectedIndex = timein.selectedIndex;
@@ -52,6 +53,7 @@ window.form = (function () {
   return {
     noticeForm: noticeForm,
     capacity: capacity,
-    fieldset: fieldset
+    fieldset: fieldset,
+    myAddress: myAddress
   };
 })();

@@ -16,6 +16,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
   var capacity = formModule.capacity;
   var noticeForm = formModule.noticeForm;
   var fieldset = formModule.fieldset;
+  var myAddress = formModule.myAddress;
 
   var createPin = function (homes) {
     var pinElement = mapPin.cloneNode(true);
@@ -59,13 +60,6 @@ window.pin = (function (dataModule, formModule, cardModule) {
     activateHome(openedPin, mapPins);
   };
 
-  var deactivatePins = function (mapPins) {
-    pinMain.classList.remove('map__pin--active');
-    for (var j = 0; j < mapPins.length; j++) {
-      mapPins[j].classList.remove('map__pin--active');
-    }
-  };
-
   var activateHome = function (pin, mapPins) {
     pin.classList.add('map__pin--active');
 
@@ -99,14 +93,59 @@ window.pin = (function (dataModule, formModule, cardModule) {
       var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
       addPinsClickEvents(mapPins);
     } else {
+      var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
       deactivatePins(mapPins);
       pinMain.classList.add('map__pin--active');
+    }
+  };
+
+  var deactivatePins = function (mapPins) {
+    pinMain.classList.remove('map__pin--active');
+    for (var j = 0; j < mapPins.length; j++) {
+      mapPins[j].classList.remove('map__pin--active');
     }
   };
 
   var addMainPinEvent = function () {
     pinMain.addEventListener('mouseup', onPinMainMouseup);
   };
+
+  pinMain.addEventListener('mousedown', function (evt) {
+      evt.preventDefault();
+
+      var startPin = {
+       x: evt.clientX,
+       y: evt.clientY
+      }
+
+      var onMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+
+        var shift = {
+          x: startPin.x - moveEvt.clientX,
+          y: startPin.y - moveEvt.clientY
+        }
+        startPin = {
+         x: moveEvt.clientX,
+         y: moveEvt.clientY
+        }
+        myAddress.textContent = startPin.x + ', ' + startPin.y;
+
+        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      }
+
+      var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      addMainPinEvent();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
 
   var homes = dataModule.homes;
 
