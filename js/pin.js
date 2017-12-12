@@ -128,11 +128,21 @@ window.pin = (function (dataModule, formModule, cardModule) {
         startPin = {
          x: moveEvt.clientX,
          y: moveEvt.clientY
-        }
-        myAddress.textContent = startPin.x + ', ' + startPin.y;
+        };
 
-        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+        if (startPin.y > 456) {
+          myAddress.value = (startPin.x + 20) + ', ' + (456);
+          pinMain.style.top = 456 + 'px';
+          pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+        } else if (startPin.y < 100) {
+          myAddress.value = (startPin.x + 20) + ', ' + (100);
+          pinMain.style.top = 100 + 'px';
+          pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+        } else {
+          myAddress.value = (startPin.x + 20) + ', ' + (startPin.y + 44);
+          pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+          pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+        }
       }
 
       var onMouseUp = function (upEvt) {
