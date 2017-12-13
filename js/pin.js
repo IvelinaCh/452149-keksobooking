@@ -6,6 +6,8 @@ window.pin = (function (dataModule, formModule, cardModule) {
   var mapPin = mapTemplate.querySelector('.map__pin');
   var mapPinsConatiner = document.querySelector('.map__pins');
   var ESC_KEYCODE = 27;
+  var MIN_COORDS_Y = 100;
+  var MAX_COORDS_Y = 456;
   var pinMain = document.querySelector('.map__pin--main');
 
   var ENTER_KEYCODE = cardModule.ENTER_KEYCODE;
@@ -16,6 +18,7 @@ window.pin = (function (dataModule, formModule, cardModule) {
   var capacity = formModule.capacity;
   var noticeForm = formModule.noticeForm;
   var fieldset = formModule.fieldset;
+  var myAddress = formModule.myAddress;
 
   var createPin = function (homes) {
     var pinElement = mapPin.cloneNode(true);
@@ -59,13 +62,6 @@ window.pin = (function (dataModule, formModule, cardModule) {
     activateHome(openedPin, mapPins);
   };
 
-  var deactivatePins = function (mapPins) {
-    pinMain.classList.remove('map__pin--active');
-    for (var j = 0; j < mapPins.length; j++) {
-      mapPins[j].classList.remove('map__pin--active');
-    }
-  };
-
   var activateHome = function (pin, mapPins) {
     pin.classList.add('map__pin--active');
 
@@ -89,24 +85,80 @@ window.pin = (function (dataModule, formModule, cardModule) {
     for (var n = 0; n < capacity.length; n++) {
       capacity.options[n].disabled = true;
     }
-    if (map.classList.contains('map--faded')) {
-      map.classList.remove('map--faded');
-      noticeForm.classList.remove('notice__form--disabled');
-      for (var i = 1; i < fieldset.length; i++) {
-        fieldset[i].removeAttribute('disabled', true);
-      }
-      mapPinsConatiner.appendChild(createPins(homes));
-      var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
-      addPinsClickEvents(mapPins);
-    } else {
+    map.classList.remove('map--faded');
+    noticeForm.classList.remove('notice__form--disabled');
+    for (var i = 1; i < fieldset.length; i++) {
+      fieldset[i].removeAttribute('disabled', true);
+    }
+
+    mapPinsConatiner.appendChild(createPins(homes));
+    var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    addPinsClickEvents(mapPins);
+    pinMain.removeEventListener('mouseup', onPinMainMouseup);
+    pinMain.addEventListener('mouseup', function () {
       deactivatePins(mapPins);
       pinMain.classList.add('map__pin--active');
+    });
+  };
+
+  var deactivatePins = function (mapPins) {
+    pinMain.classList.remove('map__pin--active');
+    for (var j = 0; j < mapPins.length; j++) {
+      mapPins[j].classList.remove('map__pin--active');
     }
   };
 
   var addMainPinEvent = function () {
     pinMain.addEventListener('mouseup', onPinMainMouseup);
   };
+
+  pinMain.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startPin = {
+      x: evt.pageX,
+      y: evt.pageY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startPin.x - moveEvt.pageX,
+        y: startPin.y - moveEvt.pageY
+      };
+      startPin = {
+        x: moveEvt.pageX,
+        y: moveEvt.pageY
+      };
+
+      if (startPin.y > MAX_COORDS_Y) {
+        myAddress.value = (startPin.x + 20) + ', ' + (MAX_COORDS_Y + 44);
+        pinMain.style.top = MAX_COORDS_Y + 'px';
+        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      } else if (startPin.y < MIN_COORDS_Y) {
+        myAddress.value = (startPin.x + 20) + ', ' + (MIN_COORDS_Y);
+        pinMain.style.top = MIN_COORDS_Y + 'px';
+        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      } else {
+        myAddress.value = (startPin.x + 20) + ', ' + (startPin.y + 44);
+        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      addMainPinEvent();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
   var homes = dataModule.homes;
 
