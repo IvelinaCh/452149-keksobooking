@@ -1,18 +1,20 @@
 'use strict';
 
-window.pin = (function (dataModule, formModule, cardModule) {
-  var mapTemplate = cardModule.mapTemplate;
+window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
+  var mapTemplate = dataModule.mapTemplate;
   var filter = document.querySelector('.map__filters-container');
   var mapPin = mapTemplate.querySelector('.map__pin');
   var mapPinsConatiner = document.querySelector('.map__pins');
   var ESC_KEYCODE = 27;
   var MIN_COORDS_Y = 100;
   var MAX_COORDS_Y = 456;
+  var MAIN_PIN_WIDTH = 40;
+  var MAIN_PIN_HEIGHT = 44;
   var pinMain = document.querySelector('.map__pin--main');
 
   var ENTER_KEYCODE = cardModule.ENTER_KEYCODE;
   var map = cardModule.map;
-  var createCard = cardModule.createCard;
+  var createCard = showCardModule.createCard;
   var addPopupCloseListener = cardModule.addPopupCloseListener;
   var removeCurrentCard = cardModule.removeCurrentCard;
   var capacity = formModule.capacity;
@@ -134,15 +136,15 @@ window.pin = (function (dataModule, formModule, cardModule) {
       };
 
       if (startPin.y > MAX_COORDS_Y) {
-        myAddress.value = (startPin.x + 20) + ', ' + (MAX_COORDS_Y + 44);
+        myAddress.value = (startPin.x + MAIN_PIN_WIDTH / 2) + ', ' + (MAX_COORDS_Y + MAIN_PIN_HEIGHT);
         pinMain.style.top = MAX_COORDS_Y + 'px';
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
       } else if (startPin.y < MIN_COORDS_Y) {
-        myAddress.value = (startPin.x + 20) + ', ' + (MIN_COORDS_Y);
+        myAddress.value = (startPin.x + MAIN_PIN_WIDTH / 2) + ', ' + (MIN_COORDS_Y);
         pinMain.style.top = MIN_COORDS_Y + 'px';
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
       } else {
-        myAddress.value = (startPin.x + 20) + ', ' + (startPin.y + 44);
+        myAddress.value = (startPin.x + MAIN_PIN_WIDTH / 2) + ', ' + (startPin.y + MAIN_PIN_HEIGHT);
         pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
       }
@@ -165,4 +167,4 @@ window.pin = (function (dataModule, formModule, cardModule) {
   return {
     addMainPinEvent: addMainPinEvent
   };
-})(window.data, window.form, window.card);
+})(window.data, window.form, window.card, window.showСard);

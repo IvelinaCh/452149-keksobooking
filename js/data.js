@@ -1,11 +1,13 @@
 'use strict';
 
 window.data = (function () {
+  var mapTemplate = document.querySelector('template').content;
   var avatars = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
   var titles = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var types = ['flat', 'house', 'bungalo'];
   var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var times = ['12:00', '13:00', '14:00'];
+  var minPrice = ['1000', '0', '5000', '10000'];
 
   var getRandom = function (min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -85,6 +87,8 @@ window.data = (function () {
 
   return {
     homes: homes,
-    features: features
+    features: features,
+    mapTemplate: mapTemplate,
+    minPrice: minPrice
   };
 })();

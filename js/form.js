@@ -1,6 +1,6 @@
 'use strict';
 
-window.form = (function () {
+window.form = (function (dataModule, syncModule) {
   var noticeForm = document.querySelector('.notice__form');
   var fieldset = document.querySelectorAll('.notice__form fieldset');
 
@@ -16,24 +16,28 @@ window.form = (function () {
   var capacity = noticeForm.querySelector('#capacity');
   var myAddress = noticeForm.querySelector('#address');
 
+
+  var minPrice = dataModule.minPrice;
+  var synchronizeFields = syncModule.synchronizeFields;
+
+  var syncValues = function (element, option) {
+    element.value = option.value;
+  };
+
+  var syncValuesWithMin = function (element, value) {
+    element.min = value;
+  };
+
   timein.addEventListener('change', function () {
-    timeout.selectedIndex = timein.selectedIndex;
+    synchronizeFields(timein, timeout, timein.options, timeout.options, syncValues);
   });
 
   timeout.addEventListener('change', function () {
-    timein.selectedIndex = timeout.selectedIndex;
+    synchronizeFields(timeout, timein, timeout.options, timein.options, syncValues);
   });
 
   typeHome.addEventListener('change', function () {
-    if (typeHome.options[0].selected) {
-      priceHome.min = 1000;
-    } else if (typeHome.options[1].selected) {
-      priceHome.min = 0;
-    } else if (typeHome.options[2].selected) {
-      priceHome.min = 5000;
-    } else if (typeHome.options[3].selected) {
-      priceHome.min = 10000;
-    }
+    synchronizeFields(typeHome, priceHome, typeHome.options, minPrice, syncValuesWithMin);
   });
 
   var onSelectRooms = function () {
@@ -56,4 +60,4 @@ window.form = (function () {
     fieldset: fieldset,
     myAddress: myAddress
   };
-})();
+})(window.data, window.synchronizeFields);
