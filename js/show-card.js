@@ -1,7 +1,7 @@
 'use strict';
 
 window.showСard = (function (dataModule) {
-  var mapTemplate = document.querySelector('template').content;
+  var mapTemplate = dataModule.mapTemplate;
   var mapCard = mapTemplate.querySelector('.map__card');
 
   var features = dataModule.features;
@@ -44,7 +44,6 @@ window.showСard = (function (dataModule) {
     return cardElement;
   };
   return {
-    createCard: createCard,
-    mapTemplate: mapTemplate
+    createCard: createCard
   };
 })(window.data);

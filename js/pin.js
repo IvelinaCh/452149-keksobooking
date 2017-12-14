@@ -1,7 +1,7 @@
 'use strict';
 
 window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
-  var mapTemplate = showCardModule.mapTemplate;
+  var mapTemplate = dataModule.mapTemplate;
   var filter = document.querySelector('.map__filters-container');
   var mapPin = mapTemplate.querySelector('.map__pin');
   var mapPinsConatiner = document.querySelector('.map__pins');
