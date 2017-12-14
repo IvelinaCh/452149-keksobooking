@@ -19,8 +19,14 @@ window.form = (function (dataModule, syncModule) {
 
   var minPrice = dataModule.minPrice;
   var synchronizeFields = syncModule.synchronizeFields;
-  var syncValues = syncModule.syncValues;
-  var syncValuesWithMin = syncModule.syncValuesWithMin;
+
+  var syncValues = function (element, option) {
+    element.value = option.value;
+  };
+
+  var syncValuesWithMin = function (element, value) {
+    element.min = value;
+  };
 
   timein.addEventListener('change', function () {
     synchronizeFields(timein, timeout, timein.options, timeout.options, syncValues);
