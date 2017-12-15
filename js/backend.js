@@ -2,16 +2,6 @@
 
 window.backend = (function () {
   var noticeForm = document.querySelector('.notice__form');
-  var onError = function (errMessage) {
-    var message = document.createElement('div');
-    message.style = 'z-index: 10; width: 90vw; min-height: 50vh; text-align: center; position: absolute; font-size: 72px; color: red; background-color: gray;';
-    message.textContent = errMessage;
-    document.body.insertAdjacentElement('afterbegin', message);
-  };
-
-  var onLoad = function (response) {
-    noticeForm.reset();
-  };
 
   var save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
@@ -49,6 +39,17 @@ window.backend = (function () {
     });
     xhr.open('GET', URL);
     xhr.send();
+  };
+
+  var onError = function (errMessage) {
+    var message = document.createElement('div');
+    message.style = 'z-index: 10; width: 90vw; min-height: 50vh; text-align: center; position: absolute; font-size: 72px; color: red; background-color: gray;';
+    message.textContent = errMessage;
+    document.body.insertAdjacentElement('afterbegin', message);
+  };
+
+  var onLoad = function () {
+    noticeForm.reset();
   };
 
   return {
