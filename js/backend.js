@@ -4,7 +4,7 @@ window.backend = (function () {
   var noticeForm = document.querySelector('.notice__form');
   var onError = function (errMessage) {
     var message = document.createElement('div');
-    message.style = 'z-index: 10; width: 95vw; min-height: 50vh; text-align: center; position: absolute; font-size: 72px; color: red; background-color: gray;';
+    message.style = 'z-index: 10; width: 90vw; min-height: 50vh; text-align: center; position: absolute; font-size: 72px; color: red; background-color: gray;';
     message.textContent = errMessage;
     document.body.insertAdjacentElement('afterbegin', message);
   };
