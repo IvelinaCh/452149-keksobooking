@@ -160,7 +160,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      addMainPinEvent();
+      //addMainPinEvent();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
