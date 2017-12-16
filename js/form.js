@@ -1,7 +1,10 @@
 'use strict';
 
-window.form = (function (dataModule, syncModule) {
-  var noticeForm = document.querySelector('.notice__form');
+window.form = (function (dataModule, syncModule, backendModule) {
+  var save = backendModule.save;
+  var onLoad = backendModule.onLoad;
+  var onError = backendModule.onError;
+  var noticeForm = backendModule.noticeForm;
   var fieldset = document.querySelectorAll('.notice__form fieldset');
 
   for (var k = 1; k < fieldset.length; k++) {
@@ -54,10 +57,15 @@ window.form = (function (dataModule, syncModule) {
 
   roomNumber.addEventListener('change', onSelectRooms);
 
+  noticeForm.addEventListener('submit', function (evt) {
+    save(new FormData(noticeForm), onLoad, onError);
+    evt.preventDefault();
+  });
+
   return {
     noticeForm: noticeForm,
     capacity: capacity,
     fieldset: fieldset,
     myAddress: myAddress
   };
-})(window.data, window.synchronizeFields);
+})(window.data, window.synchronizeFields, window.backend);

@@ -1,6 +1,6 @@
 'use strict';
 
-window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
+window.pin = (function (dataModule, backendModule, formModule, cardModule, showCardModule) {
   var mapTemplate = dataModule.mapTemplate;
   var filter = document.querySelector('.map__filters-container');
   var mapPin = mapTemplate.querySelector('.map__pin');
@@ -18,9 +18,12 @@ window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
   var addPopupCloseListener = cardModule.addPopupCloseListener;
   var removeCurrentCard = cardModule.removeCurrentCard;
   var capacity = formModule.capacity;
-  var noticeForm = formModule.noticeForm;
   var fieldset = formModule.fieldset;
   var myAddress = formModule.myAddress;
+
+  var load = backendModule.load;
+  var onError = backendModule.onError;
+  var noticeForm = backendModule.noticeForm;
 
   var createPin = function (homes) {
     var pinElement = mapPin.cloneNode(true);
@@ -41,30 +44,30 @@ window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
     return fragment;
   };
 
-  var addPinsClickEvents = function (mapPins) {
+  var addPinsClickEvents = function (mapPins, homes) {
     for (var i = 0; i < mapPins.length; i++) {
       mapPins[i].addEventListener('click', function (evt) {
-        onPinClick(evt, mapPins);
+        onPinClick(evt, mapPins, homes);
       });
       mapPins[i].addEventListener('keydown', function (evt) {
         if (evt.keyCode === ENTER_KEYCODE) {
-          onPinClick(evt, mapPins);
+          onPinClick(evt, mapPins, homes);
         }
       });
     }
   };
 
-  var onPinClick = function (evt, mapPins) {
+  var onPinClick = function (evt, mapPins, homes) {
 
     removeCurrentCard();
 
     deactivatePins(mapPins);
 
     var openedPin = evt.currentTarget;
-    activateHome(openedPin, mapPins);
+    activateHome(openedPin, mapPins, homes);
   };
 
-  var activateHome = function (pin, mapPins) {
+  var activateHome = function (pin, mapPins, homes) {
     pin.classList.add('map__pin--active');
 
     var index = pin.dataset.index;
@@ -83,10 +86,8 @@ window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
     document.addEventListener('keydown', onEscDown);
   };
 
-  var onPinMainMouseup = function () {
-    for (var n = 0; n < capacity.length; n++) {
-      capacity.options[n].disabled = true;
-    }
+  var onPinMainMouseup = function (homes) {
+    capacity.value = '1';
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     for (var i = 1; i < fieldset.length; i++) {
@@ -96,7 +97,7 @@ window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
     mapPinsConatiner.appendChild(createPins(homes));
     var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-    addPinsClickEvents(mapPins);
+    addPinsClickEvents(mapPins, homes);
     pinMain.removeEventListener('mouseup', onPinMainMouseup);
     pinMain.addEventListener('mouseup', function () {
       deactivatePins(mapPins);
@@ -112,7 +113,17 @@ window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
   };
 
   var addMainPinEvent = function () {
-    pinMain.addEventListener('mouseup', onPinMainMouseup);
+    pinMain.addEventListener('mouseup', onEventLoad);
+  };
+
+  var onload = function (response) {
+    var homes = response;
+    onPinMainMouseup(homes);
+    pinMain.removeEventListener('mouseup', onEventLoad);
+  };
+
+  var onEventLoad = function () {
+    load(onload, onError);
   };
 
   pinMain.addEventListener('mousedown', function (evt) {
@@ -152,7 +163,6 @@ window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      addMainPinEvent();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
@@ -162,9 +172,7 @@ window.pin = (function (dataModule, formModule, cardModule, showCardModule) {
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var homes = dataModule.homes;
-
   return {
     addMainPinEvent: addMainPinEvent
   };
-})(window.data, window.form, window.card, window.showСard);
+})(window.data, window.backend, window.form, window.card, window.showСard);
