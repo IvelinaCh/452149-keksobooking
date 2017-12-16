@@ -87,9 +87,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   };
 
   var onPinMainMouseup = function (homes) {
-    for (var n = 0; n < capacity.length; n++) {
-      capacity.options[n].disabled = true;
-    }
+    capacity.value = '1';
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     for (var i = 1; i < fieldset.length; i++) {
@@ -115,12 +113,17 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   };
 
   var addMainPinEvent = function () {
-    pinMain.addEventListener('mouseup', function () {
-      load(function (response) {
-        var homes = response;
-        onPinMainMouseup(homes);
-      }, onError);
-    });
+    pinMain.addEventListener('mouseup', onEventLoad);
+  };
+
+  var onload = function (response) {
+    var homes = response;
+    onPinMainMouseup(homes);
+    pinMain.removeEventListener('mouseup', onEventLoad);
+  };
+
+  var onEventLoad = function () {
+    load(onload, onError);
   };
 
   pinMain.addEventListener('mousedown', function (evt) {
@@ -160,7 +163,6 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      //addMainPinEvent();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
