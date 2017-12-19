@@ -16,29 +16,27 @@ window.filter = (function () {
   var getFilter = function (homes) {
     homes.filter(function (ad) {
       var hasFeatures = housingFeature.every(function (feature) {
-        for(var i = 0; i < housingFeature.length; i++) {
-          if (housingFeature[i].checked) {
-            return true;
-          }
-
-          if (ad.indexOf(housingFeature[i])) {
-            return true;
-          } else {
-            return false;
-          }
+        if (!feature.checked) {
+          return true;
         }
+
+        if (ad.indexOf(feature) !== -1) {
+          return true;
+        }
+        return false;
       });
 
-      for(var i = 0; i < allFilters.length; i++) {
-        var hasHomes = homes.filter(function (it) {
+      for (var i = 0; i < allFilters.length; i++) {
+        var hasHomes = homes.filter(function () {
           if ((housingType.value === 'any' || housingType.value === homes[i].type.value) &&
             (housingPrice.value === 'any' || housingPrice.value === homes[i].price.value) &&
             (housingRooms.value === 'any' || housingRooms.value === homes[i].rooms.value) &&
             (housingGuests.value === 'any' || housingGuests.value === homes[i].guests.value)) {
-              return true;
-            }
-          })
-        }
+            return true;
+          }
+          return true;
+        });
+      }
 
       if (hasFeatures && hasHomes) {
         hasFeatures.concat(hasHomes);
@@ -47,9 +45,9 @@ window.filter = (function () {
         return false;
       }
     });
-  }
+  };
   return {
     allFilters: allFilters,
     getFilter: getFilter
   };
-})()
+})();

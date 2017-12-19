@@ -5,6 +5,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   var filter = document.querySelector('.map__filters-container');
   var mapPin = mapTemplate.querySelector('.map__pin');
   var mapPinsConatiner = document.querySelector('.map__pins');
+  var HOMES_COUNT = 5;
   var ESC_KEYCODE = 27;
   var MIN_COORDS_Y = 100;
   var MAX_COORDS_Y = 456;
@@ -36,7 +37,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var createPins = function (homes) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < homes.length; i++) {
+    for (var i = 0; i < HOMES_COUNT; i++) {
       var pin = createPin(homes[i]);
       fragment.appendChild(pin);
       pin.dataset.index = i;
@@ -112,13 +113,13 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     }
   };
 
-  var addMainPinEvent = function (homes) {
+  var addMainPinEvent = function () {
     pinMain.addEventListener('mouseup', onEventLoad);
   };
 
   var onload = function (response) {
     var homes = response;
-    onPinMainMouseup(homes);//console.log(response);
+    onPinMainMouseup(homes);// console.log(response);
     pinMain.removeEventListener('mouseup', onEventLoad);
     return homes;
   };

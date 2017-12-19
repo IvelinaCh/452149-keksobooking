@@ -7,10 +7,14 @@ window.map = (function (cardModule, pinModule, filterModule) {
 
   pinModule.addMainPinEvent(map);
 
-  for(var i = 0; i < allFilters.length; i++) {
-    allFilters[i].addEventListener('change', getFilter);
+  for (var i = 0; i < allFilters.length; i++) {
+    allFilters[i].addEventListener('change', changeFilter);
+  }
+
+  var changeFilter = function () {
+    getFilter(homes);
   }
 
 })(window.card, window.pin, window.filter);
 
-//console.log(allFilters[1].value);console.log(housingType.selected.value);
+// console.log(allFilters[1].value);console.log(housingType.selected.value);
