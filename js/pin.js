@@ -118,7 +118,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var onload = function (response) {
     var homes = response;
-    onPinMainMouseup(homes);
+    onPinMainMouseup(homes);//console.log(response);
     pinMain.removeEventListener('mouseup', onEventLoad);
   };
 
@@ -173,6 +173,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   });
 
   return {
-    addMainPinEvent: addMainPinEvent
+    addMainPinEvent: addMainPinEvent,
+    homes: homes
   };
 })(window.data, window.backend, window.form, window.card, window.showСard);
