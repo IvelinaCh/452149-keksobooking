@@ -112,7 +112,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     }
   };
 
-  var addMainPinEvent = function () {
+  var addMainPinEvent = function (homes) {
     pinMain.addEventListener('mouseup', onEventLoad);
   };
 
@@ -120,6 +120,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     var homes = response;
     onPinMainMouseup(homes);//console.log(response);
     pinMain.removeEventListener('mouseup', onEventLoad);
+    return homes;
   };
 
   var onEventLoad = function () {
@@ -173,7 +174,6 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   });
 
   return {
-    addMainPinEvent: addMainPinEvent,
-    homes: homes
+    addMainPinEvent: addMainPinEvent
   };
 })(window.data, window.backend, window.form, window.card, window.showСard);
