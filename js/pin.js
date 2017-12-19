@@ -1,6 +1,6 @@
 'use strict';
 
-window.pin = (function (dataModule, backendModule, formModule, cardModule, showCardModule) {
+window.pin = (function (dataModule, backendModule, formModule, cardModule, showCardModule, filterModule) {
   var mapTemplate = dataModule.mapTemplate;
   var filter = document.querySelector('.map__filters-container');
   var mapPin = mapTemplate.querySelector('.map__pin');
@@ -25,6 +25,9 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   var load = backendModule.load;
   var onError = backendModule.onError;
   var noticeForm = backendModule.noticeForm;
+
+  var allFilters = filterModule.allFilters;
+  var getFilter = filterModule.getFilter;
 
   var createPin = function (homes) {
     var pinElement = mapPin.cloneNode(true);
@@ -121,7 +124,12 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     var homes = response;
     onPinMainMouseup(homes);// console.log(response);
     pinMain.removeEventListener('mouseup', onEventLoad);
-    return homes;
+
+    for (var i = 0; i < allFilters.length; i++) {
+      allFilters[i].addEventListener('change', function () {
+        getFilter(homes);
+      });
+    }
   };
 
   var onEventLoad = function () {
@@ -177,4 +185,4 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   return {
     addMainPinEvent: addMainPinEvent
   };
-})(window.data, window.backend, window.form, window.card, window.showСard);
+})(window.data, window.backend, window.form, window.card, window.showСard, window.filter);
