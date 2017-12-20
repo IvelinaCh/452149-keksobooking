@@ -14,8 +14,9 @@ window.filter = (function () {
   var allFilters = mapFilters.concat(housingFeatures);
 
   var getFilter = function (homes) {
+    var hasFeatures = [];
     homes.filter(function (ad) {
-      var hasFeatures = housingFeature.every(function (feature) {
+      hasFeatures = housingFeatures.every(function (feature) {
         if (!feature.checked) {
           return true;
         }
@@ -25,13 +26,14 @@ window.filter = (function () {
         }
         return false;
       });
+    })
 
       for (var i = 0; i < allFilters.length; i++) {
-        var hasHomes = homes.filter(function () {
-          if ((housingType.value === 'any' || housingType.value === homes[i].type.value) &&
-            (housingPrice.value === 'any' || housingPrice.value === homes[i].price.value) &&
-            (housingRooms.value === 'any' || housingRooms.value === homes[i].rooms.value) &&
-            (housingGuests.value === 'any' || housingGuests.value === homes[i].guests.value)) {
+        var hasHomes = homes.filter(function (home) {
+          if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
+            (housingPrice.value === 'any' || housingPrice.value === home.offer.price) &&
+            (housingRooms.value === 'any' || housingRooms.value === home.offer.rooms) &&
+            (housingGuests.value === 'any' || housingGuests.value === home.offer.guests)) {
             return true;
           }
           return true;
@@ -39,12 +41,11 @@ window.filter = (function () {
       }
 
       if (hasFeatures && hasHomes) {
-        hasFeatures.concat(hasHomes);
+        hasHomes = hasHomes.concat(hasFeatures);
         return true;
       } else {
         return false;
       }
-    });
   };
   return {
     allFilters: allFilters,
