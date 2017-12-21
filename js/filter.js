@@ -7,7 +7,7 @@ window.filter = (function () {
   var housingPrice = mapFilterForm.querySelector('#housing-price');
   var housingRooms = mapFilterForm.querySelector('#housing-rooms');
   var housingGuests = mapFilterForm.querySelector('#housing-guests');
-  var housingFeature = mapFilterForm.querySelectorAll('.feature-container input');
+  var housingFeature = mapFilterForm.querySelectorAll('#housing-features input');
 
   var mapFilters = Array.from(mapFilter);
   var housingFeatures = Array.from(housingFeature);
@@ -20,7 +20,7 @@ window.filter = (function () {
           return true;
         }
 
-        if (ad.indexOf(feature) !== -1) {
+        if (ad.offer.features.indexOf(feature) !== -1) {
           return true;
         }
         return false;
