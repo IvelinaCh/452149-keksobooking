@@ -13,10 +13,9 @@ window.filter = (function () {
   var housingFeatures = Array.from(housingFeature);
   var allFilters = mapFilters.concat(housingFeatures);
 
-  var getFilter = function (homes) {
-    var hasFeatures = [];
-    homes.filter(function (ad) {
-      hasFeatures = housingFeatures.every(function (feature) {
+  var getFilterFeature = function (homes) {
+    return homes.filter(function (ad) {
+      var hasFeatures = housingFeatures.every(function (feature) {
         if (!feature.checked) {
           return true;
         }
@@ -26,26 +25,35 @@ window.filter = (function () {
         }
         return false;
       });
-    })
+    });//console.log(hasFeatures);
+  }
 
-      for (var i = 0; i < allFilters.length; i++) {
-        var hasHomes = homes.filter(function (home) {
-          if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
-            (housingPrice.value === 'any' || housingPrice.value === home.offer.price) &&
-            (housingRooms.value === 'any' || housingRooms.value === home.offer.rooms) &&
-            (housingGuests.value === 'any' || housingGuests.value === home.offer.guests)) {
-            return true;
-          }
+  var getFilterOffer = function (homes) {
+    for (var i = 0; i < allFilters.length; i++) {
+      var hasHomes = homes.filter(function (home) {
+        if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
+          (housingPrice.value === 'any' || housingPrice.value === home.offer.price) &&
+          (housingRooms.value === 'any' || housingRooms.value === home.offer.rooms) &&
+          (housingGuests.value === 'any' || housingGuests.value === home.offer.guests)) {
           return true;
-        });
-      }
-
-      if (hasFeatures && hasHomes) {
-        hasHomes = hasHomes.concat(hasFeatures);
+        }
         return true;
-      } else {
-        return false;
-      }
+      });
+    }
+    return hasHomes;
+  }
+
+  var getFilter = function (homes) {
+    var hasFeatures = getFilterFeature(homes);
+    var hasHomes = getFilterOffer(homes);
+//console.log(hasFeatures);console.log(hasHomes);
+    if (hasFeatures && hasHomes) {
+      hasHomes = hasHomes.concat(hasFeatures);
+     // homes = hasHomes.slice(0, 5);
+      return hasHomes;
+    } else {
+      return [];
+    }
   };
   return {
     allFilters: allFilters,

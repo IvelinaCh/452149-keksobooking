@@ -101,6 +101,8 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     mapPinsConatiner.appendChild(createPins(homes));
     var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
 
+    toHiddenOtherPins(mapPins, homes);
+
     addPinsClickEvents(mapPins, homes);
     pinMain.removeEventListener('mouseup', onPinMainMouseup);
     pinMain.addEventListener('mouseup', function () {
@@ -122,15 +124,24 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var onload = function (response) {
     var homes = response;
-    onPinMainMouseup(homes);// console.log(response);
+    onPinMainMouseup(homes);// console.log(homes);
     pinMain.removeEventListener('mouseup', onEventLoad);
+  };
 
+  var toHiddenOtherPins = function (mapPins, homes) {
     for (var i = 0; i < allFilters.length; i++) {
       allFilters[i].addEventListener('change', function () {
-        getFilter(homes);
-      });
+        var filteredHomes = getFilter(homes);//console.log(filteredHomes);
+        mapPins.forEach(function (mapPin) {
+          mapPin.classList.add('hidden');
+        })
+        for (var j = 0; j < filteredHomes.length; j++) {
+          var homeIndexes = homes.indexOf(filteredHomes[j]);console.log(homeIndexes);
+          mapPins[homeIndexes].classList.remove('hidden');
+        }
+      })
     }
-  };
+  }
 
   var onEventLoad = function () {
     load(onload, onError);
