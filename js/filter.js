@@ -1,6 +1,7 @@
 'use strict';
 
 window.filter = (function () {
+  var HOMES_COUNT = 5;
   var mapFilterForm = document.querySelector('.map__filters');
   var mapFilter = document.querySelectorAll('.map__filter');
   var housingType = mapFilterForm.querySelector('#housing-type');
@@ -13,18 +14,18 @@ window.filter = (function () {
   var housingFeatures = Array.from(housingFeature);
   var allFilters = mapFilters.concat(housingFeatures);
 
-  var getFilterFeature = function (home) {//console.log(home.offer.features);
-    return housingFeatures.every(function (feature) {//console.log(feature.value);
+  var isFilterFeature = function (home) {
+    return housingFeatures.every(function (feature) {
       if (!feature.checked) {
         return true;
       }
 
-      if (home.offer.features.indexOf(feature.value) !== -1) {//console.log(1);
+      if (home.offer.features.indexOf(feature.value) !== -1) {
         return true;
       }
       return false;
     });
-  }
+  };
 
   var getPrice = function (price) {
     if (price <= 10000) {
@@ -34,35 +35,23 @@ window.filter = (function () {
     } else {
       return 'middle';
     }
-  }
+  };
 
-  var getFilterOffer = function (home) {
-    for (var i = 0; i < allFilters.length; i++) {
-      if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
-        (housingPrice.value === 'any' || housingPrice.value === getPrice(home.offer.price)) &&
-        (housingRooms.value === 'any' || +housingRooms.value === home.offer.rooms) &&
-        (housingGuests.value === 'any' || +housingGuests.value === home.offer.guests)) {
-        return true;
-      }
-      return false;
+  var isFilterOffer = function (home) {
+    if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
+      (housingPrice.value === 'any' || housingPrice.value === getPrice(home.offer.price)) &&
+      (housingRooms.value === 'any' || +housingRooms.value === home.offer.rooms) &&
+      (housingGuests.value === 'any' || +housingGuests.value === home.offer.guests)) {
+      return true;
     }
-    return hasHomes;
-  }
+    return false;
+  };
 
   var getFilter = function (homes) {
     var filteredHomes = homes.filter(function (home) {
-      return getFilterFeature(home) && getFilterOffer(home);
-    })
-    return filteredHomes.slice(0, 5);
-    /*var hasFeatures = getFilterFeature(homes);//console.log(hasFeatures);
-    var hasHomes = getFilterOffer(homes);
-//console.log(hasFeatures);console.log(hasHomes);
-    if (hasFeatures && hasHomes) {
-      hasHomes = hasHomes.concat(hasFeatures);
-      return hasHomes.slice(0, 5);
-    } else {
-      return [];
-    }*/
+      return isFilterFeature(home) && isFilterOffer(home);
+    });
+    return filteredHomes.slice(0, HOMES_COUNT);
   };
   return {
     allFilters: allFilters,

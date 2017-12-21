@@ -6,5 +6,3 @@ window.map = (function (cardModule, pinModule) {
   pinModule.addMainPinEvent(map);
 
 })(window.card, window.pin);
-
-// console.log(allFilters[1].value);console.log(housingType.selected.value);

@@ -1,11 +1,10 @@
 'use strict';
 
-window.pin = (function (dataModule, backendModule, formModule, cardModule, showCardModule, filterModule) {
+window.pin = (function (dataModule, backendModule, formModule, cardModule, showCardModule, filterModule, debounceModule) {
   var mapTemplate = dataModule.mapTemplate;
   var filter = document.querySelector('.map__filters-container');
   var mapPin = mapTemplate.querySelector('.map__pin');
   var mapPinsConatiner = document.querySelector('.map__pins');
-  var HOMES_COUNT = 5;
   var ESC_KEYCODE = 27;
   var MIN_COORDS_Y = 100;
   var MAX_COORDS_Y = 456;
@@ -101,7 +100,9 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     mapPinsConatiner.appendChild(createPins(homes));
     var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-    startFilter(mapPins, homes);
+    debounceModule.debounce(function () {
+      startFilter(mapPins, homes);
+    });
     toHiddenOtherPins(mapPins, homes);
 
     addPinsClickEvents(mapPins, homes);
@@ -125,28 +126,30 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var onload = function (response) {
     var homes = response;
-    onPinMainMouseup(homes);// console.log(homes);
+    onPinMainMouseup(homes);
     pinMain.removeEventListener('mouseup', onEventLoad);
   };
 
   var toHiddenOtherPins = function (mapPins, homes) {
     for (var i = 0; i < allFilters.length; i++) {
       allFilters[i].addEventListener('change', function () {
-        startFilter(mapPins, homes);
-      })
+        debounceModule.debounce(function () {
+          startFilter(mapPins, homes);
+        });
+      });
     }
-  }
+  };
 
   var startFilter = function (mapPins, homes) {
-    var filteredHomes = getFilter(homes);//console.log(filteredHomes);
-    mapPins.forEach(function (mapPin) {
-      mapPin.classList.add('hidden');
-    })
+    var filteredHomes = getFilter(homes);
+    mapPins.forEach(function (ad) {
+      ad.classList.add('hidden');
+    });
     for (var j = 0; j < filteredHomes.length; j++) {
-      var homeIndexes = homes.indexOf(filteredHomes[j]);//console.log(homeIndexes);
+      var homeIndexes = homes.indexOf(filteredHomes[j]);
       mapPins[homeIndexes].classList.remove('hidden');
     }
-  }
+  };
 
   var onEventLoad = function () {
     load(onload, onError);
@@ -201,4 +204,4 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   return {
     addMainPinEvent: addMainPinEvent
   };
-})(window.data, window.backend, window.form, window.card, window.showСard, window.filter);
+})(window.data, window.backend, window.form, window.card, window.showСard, window.filter, window.debounce);
