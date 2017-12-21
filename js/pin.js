@@ -124,7 +124,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var onload = function (response) {
     var homes = response;
-    onPinMainMouseup(homes);// console.log(homes);
+    onPinMainMouseup(homes); console.log(homes);
     pinMain.removeEventListener('mouseup', onEventLoad);
   };
 

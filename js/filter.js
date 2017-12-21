@@ -28,13 +28,23 @@ window.filter = (function () {
     });
   }
 
+  var getPrice = function (price) {
+    if (price <= 10000) {
+      return 'low';
+    } else if (price >= 50000) {
+      return 'high';
+    } else {
+      return 'middle';
+    }
+  }
+
   var getFilterOffer = function (homes) {
     for (var i = 0; i < allFilters.length; i++) {
       var hasHomes = homes.filter(function (home) {
         if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
-          (housingPrice.value === 'any' || housingPrice.value === home.offer.price) &&
-          (housingRooms.value === 'any' || housingRooms.value === home.offer.rooms) &&
-          (housingGuests.value === 'any' || housingGuests.value === home.offer.guests)) {
+          (housingPrice.value === 'any' || housingPrice.value === getPrice(home.offer.price)) &&
+          (housingRooms.value === 'any' || +housingRooms.value === home.offer.rooms) &&
+          (housingGuests.value === 'any' || +housingGuests.value === home.offer.guests)) {
           return true;
         }
         return false;
@@ -44,7 +54,7 @@ window.filter = (function () {
   }
 
   var getFilter = function (homes) {
-    var hasFeatures = getFilterFeature(homes);console.log(hasFeatures);
+    var hasFeatures = getFilterFeature(homes);//console.log(hasFeatures);
     var hasHomes = getFilterOffer(homes);
 //console.log(hasFeatures);console.log(hasHomes);
     if (hasFeatures && hasHomes) {
