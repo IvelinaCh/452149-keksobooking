@@ -15,7 +15,7 @@ window.filter = (function () {
 
   var getFilterFeature = function (homes) {
     return homes.filter(function (ad) {
-      var hasFeatures = housingFeatures.every(function (feature) {
+      /*var hasFeatures = */housingFeatures.every(function (feature) {
         if (!feature.checked) {
           return true;
         }
@@ -25,7 +25,7 @@ window.filter = (function () {
         }
         return false;
       });
-    });//console.log(hasFeatures);
+    });
   }
 
   var getFilterOffer = function (homes) {
@@ -37,20 +37,19 @@ window.filter = (function () {
           (housingGuests.value === 'any' || housingGuests.value === home.offer.guests)) {
           return true;
         }
-        return true;
+        return false;
       });
     }
     return hasHomes;
   }
 
   var getFilter = function (homes) {
-    var hasFeatures = getFilterFeature(homes);
+    var hasFeatures = getFilterFeature(homes);console.log(hasFeatures);
     var hasHomes = getFilterOffer(homes);
 //console.log(hasFeatures);console.log(hasHomes);
     if (hasFeatures && hasHomes) {
       hasHomes = hasHomes.concat(hasFeatures);
-     // homes = hasHomes.slice(0, 5);
-      return hasHomes;
+      return hasHomes.slice(0, 5);
     } else {
       return [];
     }

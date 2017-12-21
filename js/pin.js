@@ -40,7 +40,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var createPins = function (homes) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < HOMES_COUNT; i++) {
+    for (var i = 0; i < homes.length; i++) {
       var pin = createPin(homes[i]);
       fragment.appendChild(pin);
       pin.dataset.index = i;
