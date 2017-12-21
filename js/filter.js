@@ -13,18 +13,16 @@ window.filter = (function () {
   var housingFeatures = Array.from(housingFeature);
   var allFilters = mapFilters.concat(housingFeatures);
 
-  var getFilterFeature = function (homes) {console.log(homes[3].offer.features);
-    return homes.filter(function (ad) {
-      return housingFeatures.every(function (feature) {
-        if (!feature.checked) {
-          return true;
-        }
+  var getFilterFeature = function (home) {//console.log(home.offer.features);
+    return housingFeatures.every(function (feature) {//console.log(feature.value);
+      if (!feature.checked) {
+        return true;
+      }
 
-        if (ad.offer.features.indexOf(feature) !== -1) {console.log(1);
-          return true;
-        }
-        return false;
-      });
+      if (home.offer.features.indexOf(feature.value) !== -1) {//console.log(1);
+        return true;
+      }
+      return false;
     });
   }
 
@@ -38,23 +36,25 @@ window.filter = (function () {
     }
   }
 
-  var getFilterOffer = function (homes) {
+  var getFilterOffer = function (home) {
     for (var i = 0; i < allFilters.length; i++) {
-      var hasHomes = homes.filter(function (home) {
-        if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
-          (housingPrice.value === 'any' || housingPrice.value === getPrice(home.offer.price)) &&
-          (housingRooms.value === 'any' || +housingRooms.value === home.offer.rooms) &&
-          (housingGuests.value === 'any' || +housingGuests.value === home.offer.guests)) {
-          return true;
-        }
-        return false;
-      });
+      if ((housingType.value === 'any' || housingType.value === home.offer.type) &&
+        (housingPrice.value === 'any' || housingPrice.value === getPrice(home.offer.price)) &&
+        (housingRooms.value === 'any' || +housingRooms.value === home.offer.rooms) &&
+        (housingGuests.value === 'any' || +housingGuests.value === home.offer.guests)) {
+        return true;
+      }
+      return false;
     }
     return hasHomes;
   }
 
   var getFilter = function (homes) {
-    var hasFeatures = getFilterFeature(homes);//console.log(hasFeatures);
+    var filteredHomes = homes.filter(function (home) {
+      return getFilterFeature(home) && getFilterOffer(home);
+    })
+    return filteredHomes.slice(0, 5);
+    /*var hasFeatures = getFilterFeature(homes);//console.log(hasFeatures);
     var hasHomes = getFilterOffer(homes);
 //console.log(hasFeatures);console.log(hasHomes);
     if (hasFeatures && hasHomes) {
@@ -62,7 +62,7 @@ window.filter = (function () {
       return hasHomes.slice(0, 5);
     } else {
       return [];
-    }
+    }*/
   };
   return {
     allFilters: allFilters,
