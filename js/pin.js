@@ -101,7 +101,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     mapPinsConatiner.appendChild(createPins(homes));
     var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-    //startFilter(mapPins, homes);
+    startFilter(mapPins, homes);
     toHiddenOtherPins(mapPins, homes);
 
     addPinsClickEvents(mapPins, homes);
