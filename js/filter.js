@@ -13,14 +13,14 @@ window.filter = (function () {
   var housingFeatures = Array.from(housingFeature);
   var allFilters = mapFilters.concat(housingFeatures);
 
-  var getFilterFeature = function (homes) {
+  var getFilterFeature = function (homes) {console.log(homes[3].offer.features);
     return homes.filter(function (ad) {
-      /*var hasFeatures = */housingFeatures.every(function (feature) {
+      return housingFeatures.every(function (feature) {
         if (!feature.checked) {
           return true;
         }
 
-        if (ad.offer.features.indexOf(feature) !== -1) {
+        if (ad.offer.features.indexOf(feature) !== -1) {console.log(1);
           return true;
         }
         return false;
