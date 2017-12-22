@@ -18,7 +18,7 @@ window.showСard = (function (dataModule) {
     }
   };
 
-  var getTypeHouse = function (home, cardElement) {
+  var getTypeHouse = function (home) {
     if (home.offer.type.indexOf('flat') !== -1) {
       return 'Квартира';
     } if (home.offer.type.indexOf('bungalo') !== -1) {

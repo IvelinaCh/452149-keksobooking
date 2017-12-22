@@ -31,7 +31,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   var createPin = function (homes) {
     var pinElement = mapPin.cloneNode(true);
     var pin = pinElement.querySelector('img');
-    pinElement.style.left = homes.location.x - MAIN_PIN_WIDTH/2 + 'px';
+    pinElement.style.left = homes.location.x - MAIN_PIN_WIDTH / 2 + 'px';
     pinElement.style.top = homes.location.y + MAIN_PIN_HEIGHT + 'px';
     pin.src = homes.author.avatar;
     return pinElement;
