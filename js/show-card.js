@@ -19,15 +19,12 @@ window.showСard = (function (dataModule) {
   };
 
   var getTypeHouse = function (home, cardElement) {
-    var typeHouse = cardElement.querySelector('h3').textContent;
     if (home.offer.type.indexOf('flat') !== -1) {
-      typeHouse = 'Квартира';
-    } else if (home.offer.type.indexOf('bungalo') !== -1) {
-      typeHouse = 'Бунгало';
-    } else {
-      typeHouse = 'Дом';
+      return 'Квартира';
+    } if (home.offer.type.indexOf('bungalo') !== -1) {
+      return 'Бунгало';
     }
-    return typeHouse;
+    return 'Дом';
   };
 
   var createCard = function (home) {

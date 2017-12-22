@@ -30,11 +30,10 @@ window.filter = (function () {
   var getPrice = function (price) {
     if (price <= 10000) {
       return 'low';
-    } else if (price >= 50000) {
+    } if (price >= 50000) {
       return 'high';
-    } else {
-      return 'middle';
     }
+    return 'middle';
   };
 
   var isFilterOffer = function (home) {
