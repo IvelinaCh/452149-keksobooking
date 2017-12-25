@@ -3,11 +3,11 @@
 window.synchronizeFields = (function () {
   var synchronizeFields = function (elemFirst, elemSecond, arrFirst, arrSecond, callFunction) {
     var value = 0;
-    for (var i = 0; i < arrFirst.length; i++) {
-      if (arrFirst[i].value === elemFirst.value) {
+    arrFirst.forEach(function (item, i) {
+      if (item.value === elemFirst.value) {
         value = arrSecond[i];
       }
-    }
+    });
     callFunction(elemSecond, value);
   };
 

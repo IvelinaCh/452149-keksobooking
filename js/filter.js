@@ -2,6 +2,8 @@
 
 window.filter = (function () {
   var HOMES_COUNT = 5;
+  var PRICE_LOW = 10000;
+  var PRICE_HIGH = 50000;
   var mapFilterForm = document.querySelector('.map__filters');
   var mapFilter = document.querySelectorAll('.map__filter');
   var housingType = mapFilterForm.querySelector('#housing-type');
@@ -28,9 +30,9 @@ window.filter = (function () {
   };
 
   var getPrice = function (price) {
-    if (price <= 10000) {
+    if (price <= PRICE_LOW) {
       return 'low';
-    } if (price >= 50000) {
+    } if (price >= PRICE_HIGH) {
       return 'high';
     }
     return 'middle';

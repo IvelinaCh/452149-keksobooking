@@ -15,17 +15,23 @@ window.card = (function () {
   var addPopupCloseListener = function (cardElement, mapPins, deactivatePins) {
     var popupClose = cardElement.querySelector('.popup__close');
 
-    popupClose.addEventListener('click', function () {
+    var closeCard = function () {
       removeCurrentCard();
       deactivatePins(mapPins);
-    });
+    };
 
-    popupClose.addEventListener('keydown', function (evt) {
+    var onPopupCloseClick = function () {
+      closeCard(mapPins, deactivatePins);
+    };
+
+    var onPopupCloseKeydown = function (evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        removeCurrentCard();
-        deactivatePins(mapPins);
+        closeCard(mapPins, deactivatePins);
       }
-    });
+    };
+
+    popupClose.addEventListener('click', onPopupCloseClick);
+    popupClose.addEventListener('keydown', onPopupCloseKeydown);
   };
   return {
     removeCurrentCard: removeCurrentCard,

@@ -39,25 +39,23 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var createPins = function (homes) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < homes.length; i++) {
-      var pin = createPin(homes[i]);
+    homes.forEach(function (ad, i) {
+      var pin = createPin(ad);
       fragment.appendChild(pin);
       pin.dataset.index = i;
-    }
+    });
     return fragment;
   };
 
   var addPinsClickEvents = function (mapPins, homes) {
-    for (var i = 0; i < mapPins.length; i++) {
-      mapPins[i].addEventListener('click', function (evt) {
+    mapPinsConatiner.addEventListener('click', function (evt) {
+      onPinClick(evt, mapPins, homes);
+    });
+    mapPinsConatiner.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
         onPinClick(evt, mapPins, homes);
-      });
-      mapPins[i].addEventListener('keydown', function (evt) {
-        if (evt.keyCode === ENTER_KEYCODE) {
-          onPinClick(evt, mapPins, homes);
-        }
-      });
-    }
+      }
+    });
   };
 
   var onPinClick = function (evt, mapPins, homes) {
@@ -66,7 +64,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
     deactivatePins(mapPins);
 
-    var openedPin = evt.currentTarget;
+    var openedPin = evt.target.closest('.map__pin');
     activateHome(openedPin, mapPins, homes);
   };
 
@@ -115,9 +113,9 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
   var deactivatePins = function (mapPins) {
     pinMain.classList.remove('map__pin--active');
-    for (var j = 0; j < mapPins.length; j++) {
-      mapPins[j].classList.remove('map__pin--active');
-    }
+    mapPins.forEach(function (ad) {
+      ad.classList.remove('map__pin--active');
+    });
   };
 
   var addMainPinEvent = function () {
@@ -145,10 +143,10 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     mapPins.forEach(function (ad) {
       ad.classList.add('hidden');
     });
-    for (var j = 0; j < filteredHomes.length; j++) {
-      var homeIndexes = homes.indexOf(filteredHomes[j]);
+    filteredHomes.forEach(function (it) {
+      var homeIndexes = homes.indexOf(it);
       mapPins[homeIndexes].classList.remove('hidden');
-    }
+    });
   };
 
   var onEventLoad = function () {

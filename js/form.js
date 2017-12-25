@@ -7,6 +7,12 @@ window.form = (function (dataModule, syncModule, backendModule) {
   var noticeForm = backendModule.noticeForm;
   var fieldset = document.querySelectorAll('.notice__form fieldset');
 
+  /*
+  В момент открытия, страница должна находиться в следующем состоянии:
+  карта затемнена (добавлен класс map--faded) и форма неактивна
+  (добавлен класс notice__form--disabled и все поля формы недоступны, disabled)
+  */
+
   for (var k = 1; k < fieldset.length; k++) {
     fieldset[k].setAttribute('disabled', true);
   }
