@@ -4,7 +4,7 @@ window.form = (function (dataModule, syncModule, backendModule) {
   var save = backendModule.save;
   var onError = backendModule.onError;
   var noticeForm = document.querySelector('.notice__form');
-  var fieldset = document.querySelectorAll('.notice__form fieldset');
+  var fieldsets = document.querySelectorAll('.notice__form fieldset');
 
   /*
   В момент открытия, страница должна находиться в следующем состоянии:
@@ -13,7 +13,7 @@ window.form = (function (dataModule, syncModule, backendModule) {
   */
 
   var setDisabledFields = function () {
-    fieldset.forEach(function (group) {
+    fieldsets.forEach(function (group) {
       group.setAttribute('disabled', true);
     });
   };
@@ -80,7 +80,7 @@ window.form = (function (dataModule, syncModule, backendModule) {
   return {
     noticeForm: noticeForm,
     capacity: capacity,
-    fieldset: fieldset,
+    fieldsets: fieldsets,
     myAddress: myAddress
   };
 })(window.data, window.synchronizeFields, window.backend);

@@ -18,7 +18,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   var addPopupCloseListener = cardModule.addPopupCloseListener;
   var removeCurrentCard = cardModule.removeCurrentCard;
   var capacity = formModule.capacity;
-  var fieldset = formModule.fieldset;
+  var fieldsets = formModule.fieldsets;
   var myAddress = formModule.myAddress;
   var noticeForm = formModule.noticeForm;
 
@@ -93,8 +93,8 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     capacity.value = '1';
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
-    fieldset.forEach(function (ad) {
-      ad.removeAttribute('disabled', true);
+    fieldsets.forEach(function (fieldset) {
+      fieldset.removeAttribute('disabled', true);
     });
 
     mapPinsConatiner.appendChild(createPins(homes));
@@ -131,8 +131,8 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   };
 
   var toHiddenOtherPins = function (mapPins, homes) {
-    allFilters.forEach(function (ad) {
-      ad.addEventListener('change', function () {
+    allFilters.forEach(function (filterItem) {
+      filterItem.addEventListener('change', function () {
         debounceModule.debounce(function () {
           startFilter(mapPins, homes);
         });
