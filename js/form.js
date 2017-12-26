@@ -2,9 +2,8 @@
 
 window.form = (function (dataModule, syncModule, backendModule) {
   var save = backendModule.save;
-  var onLoad = backendModule.onLoad;
   var onError = backendModule.onError;
-  var noticeForm = backendModule.noticeForm;
+  var noticeForm = document.querySelector('.notice__form');
   var fieldset = document.querySelectorAll('.notice__form fieldset');
 
   /*
@@ -13,9 +12,13 @@ window.form = (function (dataModule, syncModule, backendModule) {
   (добавлен класс notice__form--disabled и все поля формы недоступны, disabled)
   */
 
-  for (var k = 1; k < fieldset.length; k++) {
-    fieldset[k].setAttribute('disabled', true);
-  }
+  var setDisabledFields = function () {
+    fieldset.forEach(function (group) {
+      group.setAttribute('disabled', true);
+    });
+  };
+
+  setDisabledFields();
 
   var timein = noticeForm.querySelector('#timein');
   var timeout = noticeForm.querySelector('#timeout');
@@ -62,6 +65,12 @@ window.form = (function (dataModule, syncModule, backendModule) {
   };
 
   roomNumber.addEventListener('change', onSelectRooms);
+
+  var onLoad = function () {
+    var addresValue = myAddress.value;
+    noticeForm.reset();
+    myAddress.value = addresValue;
+  };
 
   noticeForm.addEventListener('submit', function (evt) {
     save(new FormData(noticeForm), onLoad, onError);

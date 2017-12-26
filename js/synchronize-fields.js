@@ -3,7 +3,7 @@
 window.synchronizeFields = (function () {
   var synchronizeFields = function (elemFirst, elemSecond, arrFirst, arrSecond, callFunction) {
     var value = 0;
-    arrFirst.forEach(function (item, i) {
+    Array.from(arrFirst).forEach(function (item, i) {
       if (item.value === elemFirst.value) {
         value = arrSecond[i];
       }

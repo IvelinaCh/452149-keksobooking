@@ -20,10 +20,10 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   var capacity = formModule.capacity;
   var fieldset = formModule.fieldset;
   var myAddress = formModule.myAddress;
+  var noticeForm = formModule.noticeForm;
 
   var load = backendModule.load;
   var onError = backendModule.onError;
-  var noticeForm = backendModule.noticeForm;
 
   var allFilters = filterModule.allFilters;
   var getFilter = filterModule.getFilter;
@@ -65,7 +65,9 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     deactivatePins(mapPins);
 
     var openedPin = evt.target.closest('.map__pin');
-    activateHome(openedPin, mapPins, homes);
+    if (openedPin) {
+      activateHome(openedPin, mapPins, homes);
+    }
   };
 
   var activateHome = function (pin, mapPins, homes) {
@@ -91,9 +93,9 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
     capacity.value = '1';
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
-    for (var i = 1; i < fieldset.length; i++) {
-      fieldset[i].removeAttribute('disabled', true);
-    }
+    fieldset.forEach(function (ad) {
+      ad.removeAttribute('disabled', true);
+    });
 
     mapPinsConatiner.appendChild(createPins(homes));
     var mapPins = mapPinsConatiner.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -129,13 +131,13 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
   };
 
   var toHiddenOtherPins = function (mapPins, homes) {
-    for (var i = 0; i < allFilters.length; i++) {
-      allFilters[i].addEventListener('change', function () {
+    allFilters.forEach(function (ad) {
+      ad.addEventListener('change', function () {
         debounceModule.debounce(function () {
           startFilter(mapPins, homes);
         });
       });
-    }
+    });
   };
 
   var startFilter = function (mapPins, homes) {

@@ -3,7 +3,6 @@
 window.backend = (function () {
   var URL_SAVE = 'https://1510.dump.academy/keksobooking';
   var URL_LOAD = 'https://1510.dump.academy/keksobooking/data';
-  var noticeForm = document.querySelector('.notice__form');
 
   var save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
@@ -48,15 +47,9 @@ window.backend = (function () {
     document.body.insertAdjacentElement('afterbegin', message);
   };
 
-  var onLoad = function () {
-    noticeForm.reset();
-  };
-
   return {
     load: load,
     save: save,
-    noticeForm: noticeForm,
-    onError: onError,
-    onLoad: onLoad
+    onError: onError
   };
 })();
