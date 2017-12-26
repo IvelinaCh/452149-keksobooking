@@ -64,7 +64,7 @@ window.pin = (function (dataModule, backendModule, formModule, cardModule, showC
 
     deactivatePins(mapPins);
 
-    var openedPin = evt.target.closest('.map__pin');
+    var openedPin = evt.target.closest('.map__pin:not(.map__pin--main)');
     if (openedPin) {
       activateHome(openedPin, mapPins, homes);
     }
