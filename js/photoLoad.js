@@ -6,7 +6,7 @@ window.photoLoad = (function () {
   var fieldForAvatar = document.querySelector('#avatar');
   var fieldForPhoto = document.querySelector('#images');
   var avatarPreview = document.querySelector('.notice__preview img');
-  var zoneForAvatar = document.querySelector('.notice__preview .drop-zone');
+  var zoneForAvatar = document.querySelector('.notice__photo .drop-zone');
   var photoContainer = document.querySelector('.form__photo-container');
   var zoneForPhoto = photoContainer.querySelector('.drop-zone');
 
@@ -27,30 +27,29 @@ window.photoLoad = (function () {
     }
   };
 
-  var onLoadAvatar = function () {
-    var avatar = fieldForAvatar.files[0];
+  var onImageDragover = function (evt) {
+    evt.preventDefault();
+  };
+
+  zoneForAvatar.addEventListener('dragover', onImageDragover);
+  zoneForPhoto.addEventListener('dragover', onImageDragover);
+
+  var onLoadAvatar = function (avatar) {
     readerFiles(avatar, avatarPreview);
   };
 
   fieldForAvatar.addEventListener('change', function () {
-    onLoadAvatar();
+    var avatar = fieldForAvatar.files[0];
+    onLoadAvatar(avatar);
   });
 
   zoneForAvatar.addEventListener('drop', function (evt) {
-    evt.preventDefault()
-    onLoadAvatar();
+    var avatar = evt.dataTransfer.files[0];
+    evt.preventDefault();
+    onLoadAvatar(avatar);
   });
 
-  /*var onLoadPhoto = function () {
-    Array.from(fieldForPhoto.files).forEach(function (photoItem) {
-      var photo = photoItem;
-      var photoImg = document.createElement('img');
-      photoContainer.appendChild(photoImg);
-      readerFiles(photo, photoImg);
-    });
-  };*/
-
-  var onLoadPhoto = function () {
+  var onLoadPhoto = function (photoItem) {
     var photo = photoItem;
     var photoImg = document.createElement('img');
     photoContainer.appendChild(photoImg);
@@ -64,7 +63,7 @@ window.photoLoad = (function () {
   });
 
   zoneForPhoto.addEventListener('drop', function (evt) {
-    evt.preventDefault()
+    evt.preventDefault();
     Array.from(evt.dataTransfer.files).forEach(function (photoItem) {
       onLoadPhoto(photoItem);
     });
