@@ -2,6 +2,8 @@
 
 window.photoLoad = (function () {
   var FILE_TYPES = ['.gif', '.jpg', '.jpeg', '.png'];
+  var WIDTH_PHOTO = 40;
+  var HEIGHT_PHOTO = 44;
 
   var fieldForAvatar = document.querySelector('#avatar');
   var fieldForPhoto = document.querySelector('#images');
@@ -9,6 +11,8 @@ window.photoLoad = (function () {
   var zoneForAvatar = document.querySelector('.notice__photo .drop-zone');
   var photoContainer = document.querySelector('.form__photo-container');
   var zoneForPhoto = photoContainer.querySelector('.drop-zone');
+  fieldForAvatar.name = 'avatar';
+  fieldForPhoto.name = 'files';
 
   var readerFiles = function (file, filePreview) {
     var fileName = file.name.toLowerCase();
@@ -52,6 +56,8 @@ window.photoLoad = (function () {
   var onLoadPhoto = function (photoItem) {
     var photo = photoItem;
     var photoImg = document.createElement('img');
+    photoImg.style.width = WIDTH_PHOTO + 'px';
+    photoImg.style.height = HEIGHT_PHOTO + 'px';
     photoContainer.appendChild(photoImg);
     readerFiles(photo, photoImg);
   };
@@ -68,4 +74,9 @@ window.photoLoad = (function () {
       onLoadPhoto(photoItem);
     });
   });
+
+  return {
+    fieldForAvatar: fieldForAvatar,
+    fieldForPhoto: fieldForPhoto
+  };
 })();

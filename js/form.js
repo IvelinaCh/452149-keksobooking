@@ -1,6 +1,6 @@
 'use strict';
 
-window.form = (function (dataModule, syncModule, backendModule) {
+window.form = (function (dataModule, syncModule, backendModule, photoLoadModule) {
   var save = backendModule.save;
   var onError = backendModule.onError;
   var noticeForm = document.querySelector('.notice__form');
@@ -31,6 +31,9 @@ window.form = (function (dataModule, syncModule, backendModule) {
 
   var minPrice = dataModule.minPrice;
   var synchronizeFields = syncModule.synchronizeFields;
+
+  var fieldForAvatar = photoLoadModule.fieldForAvatar;
+  var fieldForPhoto = photoLoadModule.fieldForPhoto;
 
   var syncValues = function (element, option) {
     element.value = option.value;
@@ -83,4 +86,4 @@ window.form = (function (dataModule, syncModule, backendModule) {
     fieldsets: fieldsets,
     myAddress: myAddress
   };
-})(window.data, window.synchronizeFields, window.backend);
+})(window.data, window.synchronizeFields, window.backend, window.photoLoad);
