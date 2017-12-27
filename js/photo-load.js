@@ -48,9 +48,8 @@ window.photoLoad = (function () {
   });
 
   zoneForAvatar.addEventListener('drop', function (evt) {
-    var avatar = evt.dataTransfer.files[0];
     evt.preventDefault();
-    onLoadAvatar(avatar);
+    fieldForAvatar.files = evt.dataTransfer.files;
   });
 
   var onLoadPhoto = function (photoItem) {
@@ -70,13 +69,11 @@ window.photoLoad = (function () {
 
   zoneForPhoto.addEventListener('drop', function (evt) {
     evt.preventDefault();
-    Array.from(evt.dataTransfer.files).forEach(function (photoItem) {
-      onLoadPhoto(photoItem);
-    });
+    fieldForPhoto.files = evt.dataTransfer.files;
   });
 
   return {
-    fieldForAvatar: fieldForAvatar,
-    fieldForPhoto: fieldForPhoto
+    avatarPreview: avatarPreview,
+    photoContainer: photoContainer
   };
 })();

@@ -28,12 +28,11 @@ window.form = (function (dataModule, syncModule, backendModule, photoLoadModule)
   var capacity = noticeForm.querySelector('#capacity');
   var myAddress = noticeForm.querySelector('#address');
 
-
   var minPrice = dataModule.minPrice;
   var synchronizeFields = syncModule.synchronizeFields;
 
-  var fieldForAvatar = photoLoadModule.fieldForAvatar;
-  var fieldForPhoto = photoLoadModule.fieldForPhoto;
+  var avatarPreview = photoLoadModule.avatarPreview;
+  var photoContainer = photoLoadModule.photoContainer;
 
   var syncValues = function (element, option) {
     element.value = option.value;
@@ -72,6 +71,10 @@ window.form = (function (dataModule, syncModule, backendModule, photoLoadModule)
   var onLoad = function () {
     var addresValue = myAddress.value;
     noticeForm.reset();
+    avatarPreview.src = 'img/muffin.png';
+    photoContainer.querySelectorAll('img').forEach(function (image) {
+      image.remove();
+    });
     myAddress.value = addresValue;
   };
 
